@@ -58,6 +58,8 @@ public class Chassis extends Submodule {
         public double y = 0;
         public Rotation2d rotation = new Rotation2d(0);
 
+        public double pitch = 0;
+
         // Outputs
         public double leftPercent = 0.0;
         public double rightPercent = 0.0;
@@ -76,7 +78,7 @@ public class Chassis extends Submodule {
 
     /** Enum controlling control state */
     public static enum ControlState {
-        OPEN_LOOP, PATH_FOLLOWING
+        OPEN_LOOP, PATH_FOLLOWING, AUTOBALANCE
     }
 
     /** Motors */
@@ -229,11 +231,24 @@ public class Chassis extends Submodule {
                 mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, CANSparkMax.ControlType.kVelocity);
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity, CANSparkMax.ControlType.kVelocity);
                 break;
+
+            case AUTOBALANCE:
+                while (true) {
+                    if (periodicIO.pitch >= 5) {
+                        
+                    } else if (periodicIO.pitch <= -5) {
+                        
+                    }
+                    return;
+                }
         }
     }
 
     @Override
     public void update(double timestamp) {
+        // Autobalance
+        periodicIO.pitch = mImu.getPitch();
+        
         periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
         periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
 
