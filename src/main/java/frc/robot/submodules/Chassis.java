@@ -86,18 +86,12 @@ public class Chassis extends Submodule {
     private final LazyCANSparkMax mLeftFollowerA = new LazyCANSparkMax(ChassisConstants.LEFT_FOLLOWER_A_ID, MotorType.kBrushless);
 
     private final LazyCANSparkMax mRightLeader = new LazyCANSparkMax(ChassisConstants.RIGHT_LEADER_ID, MotorType.kBrushless);
-    private final LazyCANSparkMax mRightFollowerA = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);
-
-    /** pid controllers */
-    SparkMaxPIDController mPIDControllerR;
-    SparkMaxPIDController mPIDControllerL;
-
-    /** encoders */
-    RelativeEncoder encoderL;
-    RelativeEncoder encoderR;
+    private final LazyCANSparkMax mRightFollowerA = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
+    private RelativeEncoder encoderL;
+    private RelativeEncoder encoderR;
 
     /** Controllers */
     private DifferentialDriveOdometry mOdometry;
@@ -105,6 +99,8 @@ public class Chassis extends Submodule {
     // private VelocityController leftVelController, rightVelController;
     private VelocityController velocityController;
     private double leftPrevVel, rightPrevVel;
+    private SparkMaxPIDController mPIDControllerR;
+    private SparkMaxPIDController mPIDControllerL;
 
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();
@@ -410,17 +406,22 @@ public class Chassis extends Submodule {
     public void zero() {
         resetEncoders();
         zeroHeading();
+        //zeroPitch();
     }
 
     /** Resets drive encoders to 0 */
     public void resetEncoders() {
-        mLeftLeader.setSelectedSensorPosition(0);
-        mRightLeader.setSelectedSensorPosition(0);
+        encoderL.setPosition(0);
+        encoderR.setPosition(0);
     }
 
     /** Zeros IMU heading */
     public void zeroHeading() {
         mImu.setYaw(0);
+    }
+
+    public void zeroPitch(){
+        //mImu.setPitch(0);
     }
 
     /**

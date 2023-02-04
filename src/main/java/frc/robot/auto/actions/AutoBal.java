@@ -5,7 +5,7 @@ import frc.robot.submodules.Chassis;
 public class AutoBal implements Action{
 
     public boolean isDone(){
-
+        return false;
     }
 
     public void update(){
