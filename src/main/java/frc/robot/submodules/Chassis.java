@@ -12,6 +12,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -448,11 +449,11 @@ public class Chassis extends Submodule {
      */
     public void setBrakeMode(boolean brake) {
         if (brake) {
-            mRightLeader.setNeutralMode(NeutralMode.Brake);
-            mLeftLeader.setNeutralMode(NeutralMode.Brake);
+            mRightLeader.setIdleMode(IdleMode.kBrake);
+            mLeftLeader.setIdleMode(IdleMode.kBrake);
         } else {
-            mRightLeader.setNeutralMode(NeutralMode.Coast);
-            mLeftLeader.setNeutralMode(NeutralMode.Coast);
+            mRightLeader.setIdleMode(IdleMode.kCoast);
+            mLeftLeader.setIdleMode(IdleMode.kCoast);
         }
     }
 
