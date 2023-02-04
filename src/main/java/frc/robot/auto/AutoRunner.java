@@ -24,6 +24,10 @@ public class AutoRunner {
         for(AutoSequence sequence: sequences){
             chooser.addOption(sequence.getName(), sequence);
         }
+        Shuffleboard.getTab("MAIN")
+                .add("Auton Selection", chooser)
+                .withSize(3, 1)
+                .withPosition(2, 1);
     }
 
     /**
