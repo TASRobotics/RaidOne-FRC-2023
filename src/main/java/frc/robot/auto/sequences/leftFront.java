@@ -6,6 +6,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.auto.actions.DrivePath;
 import frc.robot.auto.actions.LambdaAction;
 import frc.robot.auto.actions.ActionGroup;
+import frc.robot.auto.actions.AutoBal;
+import java.util.List;
 
 import java.util.Arrays;
 
@@ -20,9 +22,9 @@ public class leftFront extends AutoSequence {
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new DrivePath(path1, true))
+                new DrivePath(path1, true)
             )
-        );
+        ));
     }
 
     @Override
