@@ -15,7 +15,6 @@ import com.pathplanner.lib.PathPlanner;
 
 public class leftFront extends AutoSequence {
     private static final Trajectory path1 = PathPlanner.loadPath("leftFront", AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
-
     public leftFront() {}
 
     @Override
