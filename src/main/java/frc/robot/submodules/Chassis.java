@@ -144,9 +144,9 @@ public class Chassis extends Submodule {
 
         /** inverts encoder*/
         encoderL = mLeftLeader.getEncoder();
-        encoderL.setInverted(true);
+        //encoderL.setInverted(true);
         encoderR = mRightLeader.getEncoder();
-        encoderR.setInverted(false);
+        //encoderR.setInverted(false);
 
         mLeftLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
         mRightLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);

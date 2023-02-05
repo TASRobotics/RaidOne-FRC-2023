@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.submodules.SubmoduleManager;
+import frc.robot.submodules.Chassis;
+import frc.robot.auto.AutoRunner;
+import frc.robot.teleop.Teleop;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,6 +19,11 @@ public class Robot extends TimedRobot {
 
   private SubmoduleManager submoduleManager = SubmoduleManager.getInstance();
 
+  private static final Chassis chassis = Chassis.getInstance();
+
+  private AutoRunner autoRunner;
+  private static final Teleop teleop = Teleop.getInstance();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -23,14 +31,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // register all submodules here
-    submoduleManager.setSubmodules(null);
+    submoduleManager.setSubmodules(
+      chassis
+    );
     submoduleManager.onInit();
+
+    autoRunner = new AutoRunner();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
     submoduleManager.onStop(Timer.getFPGATimestamp());
+    autoRunner.stop();
+    System.out.println("dkfajsd");
   }
 
   @Override
@@ -40,6 +54,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     submoduleManager.onStart(Timer.getFPGATimestamp());
+    autoRunner.readSendableSequence();
+    autoRunner.start();
   }
 
   /** This function is called periodically during autonomous. */
@@ -47,16 +63,22 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     double timestamp = Timer.getFPGATimestamp();
     submoduleManager.onLoop(timestamp);
+    autoRunner.onLoop(timestamp);
   }
 
   @Override
   public void teleopInit() {
+    // Stop the autonomous
+    autoRunner.stop();
+
+    teleop.onStart();
     submoduleManager.onStart(Timer.getFPGATimestamp());
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    teleop.onLoop();
     double timestamp = Timer.getFPGATimestamp();
     submoduleManager.onLoop(timestamp);
   }
