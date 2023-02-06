@@ -78,6 +78,11 @@ public final class Constants {
         /** Ramsete constants */
         public static final double RAMSETE_B = 2;
         public static final double RAMSETE_ZETA = 0.7;
+
+        /** Autobalance multiplier */
+        //* Charge station max tilt = 15 degrees
+        public static final double AUTOBAL_MULTIPLIER = 0.025;
+
     }
     
     /** Universal constants */
