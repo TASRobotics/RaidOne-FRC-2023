@@ -137,10 +137,10 @@ public class Chassis extends Submodule {
         mRightFollowerA.follow(mRightLeader);
 
         /** Inverts motors */
-        mLeftLeader.setInverted(true);
-        mLeftFollowerA.setInverted(true);
-        mRightLeader.setInverted(false);
-        mRightFollowerA.setInverted(false);
+        mLeftLeader.setInverted(false);
+        mLeftFollowerA.setInverted(false);
+        mRightLeader.setInverted(true);
+        mRightFollowerA.setInverted(true);
 
         /** inverts encoder*/
         encoderL = mLeftLeader.getEncoder();
@@ -170,8 +170,8 @@ public class Chassis extends Submodule {
         */
 
         /** Config Talon PID */
-        SparkMaxPIDController mPIDControllerR = mRightLeader.getPIDController();
-        SparkMaxPIDController mPIDControllerL = mLeftLeader.getPIDController();
+        mPIDControllerR = mRightLeader.getPIDController();
+        mPIDControllerL = mLeftLeader.getPIDController();
         mPIDControllerR.setP(ChassisConstants.kP);
         mPIDControllerL.setP(ChassisConstants.kP);
 
@@ -242,6 +242,9 @@ public class Chassis extends Submodule {
 
     @Override
     public void update(double timestamp) {
+        SmartDashboard.putNumber("encoderL", encoderL.getPosition());
+        SmartDashboard.putNumber("encoderR", encoderR.getPosition());
+
         // Autobalance
         periodicIO.pitch = mImu.getPitch();
         
