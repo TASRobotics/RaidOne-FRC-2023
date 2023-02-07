@@ -227,16 +227,6 @@ public class Chassis extends Submodule {
                 mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, CANSparkMax.ControlType.kVelocity);
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity, CANSparkMax.ControlType.kVelocity);
                 break;
-
-            case AUTOBALANCE:
-                while (true) {
-                    if (periodicIO.pitch >= 5) {
-                        
-                    } else if (periodicIO.pitch <= -5) {
-                        
-                    }
-                    return;
-                }
         }
     }
 
