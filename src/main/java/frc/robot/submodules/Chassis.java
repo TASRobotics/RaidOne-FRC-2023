@@ -210,11 +210,15 @@ public class Chassis extends Submodule {
             case OPEN_LOOP:
                 mLeftLeader.set(periodicIO.leftPercent);
                 mRightLeader.set(periodicIO.rightPercent);
-                break;
+                break;  
 
             case PATH_FOLLOWING:
-                mPIDControllerL.setFF(periodicIO.leftFF);
-                mPIDControllerR.setFF(periodicIO.rightFF);
+                mPIDControllerL.setFF((float)(periodicIO.leftFF));
+                mPIDControllerR.setFF((float)(periodicIO.rightFF));
+                System.out.println((float)(periodicIO.leftFF));
+                System.out.println((float)(periodicIO.rightFF));
+                //mPIDControllerL.setFF(ChassisConstants.kV);
+                //mPIDControllerR.setFF(ChassisConstants.kV);
                 mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, CANSparkMax.ControlType.kVelocity);
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity, CANSparkMax.ControlType.kVelocity);
                 break;
