@@ -34,15 +34,15 @@ public final class Constants {
         public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
             new DifferentialDriveKinematics(TRACK_WIDTH);
 
-        public static final int ENCODER_CPR = 8129; // counts per rotation
-        public static final double WHEEL_DIAMETER = 0.1524; // meters
+        public static final int ENCODER_CPR = 4096; // counts per rotation 8129
+        public static final double WHEEL_DIAMETER = 0.1016; // meters
         public static final double kEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          // (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          1/4096*12/72*56/60*3.14159*0.1016;
 
         public static final double kEncoderDistancePerRevolution =
-            // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER * Math.PI);
+        12/72*56/60*3.14159*0.1016;
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
