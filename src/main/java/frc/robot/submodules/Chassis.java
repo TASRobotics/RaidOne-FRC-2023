@@ -20,7 +20,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //import com.ctre.phoenix.music;
 
 import frc.robot.wrappers.InactiveCompressor;
-import frc.robot.wrappers.InactiveDoubleSolenoid;
 import frc.robot.wrappers.LazyCANSparkMax;
 import frc.robot.wrappers.LogicalTalonSRX;
 
@@ -104,12 +103,7 @@ public class Chassis extends Submodule {
 
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();
-
-    /** Pneumatics */
-    private InactiveCompressor compressor;
-    private final InactiveDoubleSolenoid shifter = new InactiveDoubleSolenoid(
-        ChassisConstants.SHIFTER_HIGH_TORQUE_ID, 
-        ChassisConstants.SHIFTER_LOW_TORQUE_ID);
+   
 
     private Chassis() {}
     private static Chassis instance = null;
@@ -122,7 +116,6 @@ public class Chassis extends Submodule {
 
     @Override
     public void onInit() {
-        compressor = InactiveCompressor.getInstance();
         /** Config factory default for all motors */
         mLeftLeader.restoreFactoryDefaults();
         mLeftFollowerA.restoreFactoryDefaults();
@@ -189,7 +182,6 @@ public class Chassis extends Submodule {
         mOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0), 0, 0);
 
         setBrakeMode(true);
-        changeShifterState(GearShift.LOW_TORQUE);
 
         /** Camera */
         // UsbCamera cam1 =  CameraServer.startAutomaticCapture(0);
@@ -209,7 +201,6 @@ public class Chassis extends Submodule {
         zero();
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-        changeShifterState(GearShift.LOW_TORQUE);
         setBrakeMode(true);
     }
 
@@ -322,20 +313,6 @@ public class Chassis extends Submodule {
         periodicIO.desiredRightVelocity = right;
     }
 
-    /**
-     * Changes the shifter state
-     * 
-     * @param shift shifter setting
-     */
-    public void changeShifterState(GearShift shift) {
-        if(shift == GearShift.HIGH_TORQUE) {
-            shifter.set(Value.kReverse);
-        } else if(shift == GearShift.LOW_TORQUE) {
-            shifter.set(Value.kForward);
-        } else {
-            shifter.set(Value.kOff);
-        }
-    }
 
     /**
      * A better arcade drive

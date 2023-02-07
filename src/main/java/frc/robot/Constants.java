@@ -26,7 +26,7 @@ public final class Constants {
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
         public static final double kV = 0.00016666666488163173; //2.6 units prob wrong
-        public static final double kA = 0; //14.0
+        public static final double kA = 0.0003; //14.0
         public static final double kP = 0.00003; //0.3
         
         /** Drive kinematics (for ramsete) */
