@@ -48,7 +48,6 @@ public class Teleop {
             val *= -1;
         }
         prevSwitchFront = switchFront;
-        System.out.println("Y: " + leftY);
         chassis.curvatureDrive(leftY, -master.getRightX(), Math.abs(master.getLeftY()) < Constants.DEADBAND);
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
         

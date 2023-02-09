@@ -25,9 +25,9 @@ public final class Constants {
         /** Velocity PID */
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
-        public static final double kV = 1/(6000/60*0.04965108462);//0.00016666666488163173; //2.6 units prob wrong
+        public static final double kV = 1/(6000/60*0.04965108462);
         public static final double kA = 0; //0.0003; //14.0
-        public static final double kP = 0.00003; //0.3
+        public static final double kP = 0.00002; //0.3
         
         /** Drive kinematics (for ramsete) */
         public static final double TRACK_WIDTH = 0.6;
@@ -48,7 +48,7 @@ public final class Constants {
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
-        public static final double RAMP_RATE = 0.5; // 0.33 //0.3
+        public static final double RAMP_RATE = 0.3; // 0.33 //0.3 0.5
     }
 
     public static final class IntakeConstants {

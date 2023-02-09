@@ -16,7 +16,9 @@ public class SamplePath extends AutoSequence {
 
     private static final Trajectory path1 = PathPlanner.loadPath(name, AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
 
-    public SamplePath() {}
+    public SamplePath() {
+        
+    }
 
     @Override
     public void sequence() {

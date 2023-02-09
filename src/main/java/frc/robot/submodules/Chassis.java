@@ -263,12 +263,15 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("actual left vel", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
+        SmartDashboard.putNumber("yaw", mImu.getYaw());
+        SmartDashboard.putNumber("pitch", mImu.getPitch());
 
         SmartDashboard.putNumber("left enc", encoderL.getPosition());
         SmartDashboard.putNumber("Right enc", encoderR.getPosition());
 
         SmartDashboard.putNumber("left vel 1234", encoderL.getVelocity());
         SmartDashboard.putNumber("Right vel 1234", encoderR.getVelocity());
+        
 
 
         if(controlState == ControlState.PATH_FOLLOWING) {
@@ -289,7 +292,7 @@ public class Chassis extends Submodule {
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            //setVelocity(leftVel, rightVel); WHY DOESN THIS WORK??
+            //setVelocity(leftVel, rightVel); WHY DOESN THIS WORK?? it was used in last yrs code???
             setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
