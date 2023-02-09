@@ -167,6 +167,13 @@ public class Chassis extends Submodule {
         mPIDControllerL = mLeftLeader.getPIDController();
         mPIDControllerR.setP(ChassisConstants.kP);
         mPIDControllerL.setP(ChassisConstants.kP);
+        mPIDControllerL.setIZone(ChassisConstants.PID_LOOP_IDX);
+        mPIDControllerR.setIZone(ChassisConstants.PID_LOOP_IDX);
+        //mPIDControllerL.setFF(0.000156);
+        //mPIDControllerR.setFF(0.000156);
+        mPIDControllerL.setOutputRange(-1,1);
+        mPIDControllerR.setOutputRange(-1,1);
+
 
         /** Config after imu init */
         trajectoryFollower = new TrajectoryFollower(ChassisConstants.DRIVE_KINEMATICS);
@@ -213,14 +220,21 @@ public class Chassis extends Submodule {
                 break;  
 
             case PATH_FOLLOWING:
-                mPIDControllerL.setFF((float)(periodicIO.leftFF));
-                mPIDControllerR.setFF((float)(periodicIO.rightFF));
-                System.out.println((float)(periodicIO.leftFF));
-                System.out.println((float)(periodicIO.rightFF));
+                //mPIDControllerL.setFF((periodicIO.leftFF));
+                //mPIDControllerR.setFF((periodicIO.rightFF));
+                //System.out.println("ioff: " + (float)(periodicIO.leftFF));
+                //System.out.println("ioff: " + (float)(periodicIO.rightFF));
                 //mPIDControllerL.setFF(ChassisConstants.kV);
                 //mPIDControllerR.setFF(ChassisConstants.kV);
-                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, CANSparkMax.ControlType.kVelocity);
-                mPIDControllerR.setReference(periodicIO.desiredRightVelocity, CANSparkMax.ControlType.kVelocity);
+                mPIDControllerL.setFF(1.0/6000.0);
+                mPIDControllerR.setFF(1.0/6000.0);
+                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
+                mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
+                SmartDashboard.putNumber("input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
+                SmartDashboard.putNumber("applied output", mLeftLeader.getAppliedOutput());
+                SmartDashboard.putNumber("ouput current", mLeftLeader.getOutputCurrent());
+                SmartDashboard.putNumber("desired left" , periodicIO.desiredLeftVelocity);
+                SmartDashboard.putNumber("conversion constant??", ChassisConstants.MPSToRPM);
                 break;
         }
     }
@@ -270,15 +284,13 @@ public class Chassis extends Submodule {
             leftPrevVel = leftVel;
             rightPrevVel = rightVel;
 
-            SmartDashboard.putNumber("desired left vel", -leftVel);
-            SmartDashboard.putNumber("desired right vel", -rightVel);
-
             // periodicIO.leftFF = leftVelController.updateFF(leftVel, leftAccel);
             // periodicIO.rightFF = rightVelController.updateFF(rightVel, rightAccel);
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            setVelocity(leftVel, rightVel);
+            //setVelocity(leftVel, rightVel); WHY DOESN THIS WORK??
+            setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
 

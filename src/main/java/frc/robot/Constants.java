@@ -26,11 +26,11 @@ public final class Constants {
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
         public static final double kV = 1/(6000/60*0.04965108462);//0.00016666666488163173; //2.6 units prob wrong
-        public static final double kA = 0.0003; //14.0
+        public static final double kA = 0; //0.0003; //14.0
         public static final double kP = 0.00003; //0.3
         
         /** Drive kinematics (for ramsete) */
-        public static final double TRACK_WIDTH = 0.69;
+        public static final double TRACK_WIDTH = 0.6;
         public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
             new DifferentialDriveKinematics(TRACK_WIDTH);
 
@@ -42,7 +42,9 @@ public final class Constants {
           1/4096*12/72*56/60*3.14159*0.1016;
 
         public static final double kEncoderDistancePerRevolution =
-        12/72*56/60*3.14159*0.1016;
+        12.0/72.0*56.0/60.0*3.14159*0.1016;
+
+        public static final double MPSToRPM = 60.0/(kEncoderDistancePerRevolution);
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
