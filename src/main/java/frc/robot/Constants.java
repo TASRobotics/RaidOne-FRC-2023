@@ -27,7 +27,7 @@ public final class Constants {
         public static final double kS = 0.0;
         public static final double kV = 1/(6000/60*0.04965108462);
         public static final double kA = 0; //0.0003; //14.0
-        public static final double kP = 0.00002; //0.3
+        public static final double kP = 0.000025; //0.3
         
         /** Drive kinematics (for ramsete) */
         public static final double TRACK_WIDTH = 0.6;
