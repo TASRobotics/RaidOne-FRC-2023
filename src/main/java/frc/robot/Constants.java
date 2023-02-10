@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public final class Constants {
     public static final class ChassisConstants {
         /** Motors */
-        public static final int LEFT_LEADER_ID = 1;
-        public static final int LEFT_FOLLOWER_A_ID = 2;
+        public static final int LEFT_LEADER_ID = 2;
+        public static final int LEFT_FOLLOWER_A_ID = 3;
         public static final int LEFT_FOLLOWER_B_ID = 3;
 
-        public static final int RIGHT_LEADER_ID = 11;
-        public static final int RIGHT_FOLLOWER_A_ID = 12;
+        public static final int RIGHT_LEADER_ID = 1;
+        public static final int RIGHT_FOLLOWER_A_ID = 4;
         public static final int RIGHT_FOLLOWER_B_ID = 13;
 
         /** Sensors */
@@ -25,28 +25,30 @@ public final class Constants {
         /** Velocity PID */
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
-        public static final double kV = 2.6;
-        public static final double kA = 14.0;
-        public static final double kP = 0.3;
+        public static final double kV = 1/(6000/60*0.04965108462);
+        public static final double kA = 0; //0.0003; //14.0
+        public static final double kP = 0.000025; //0.3
         
         /** Drive kinematics (for ramsete) */
-        public static final double TRACK_WIDTH = 0.69;
+        public static final double TRACK_WIDTH = 0.6;
         public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
             new DifferentialDriveKinematics(TRACK_WIDTH);
 
-        public static final int ENCODER_CPR = 8129; // counts per rotation
-        public static final double WHEEL_DIAMETER = 0.1524; // meters
+        public static final int ENCODER_CPR = 4096; // counts per rotation 8129
+        public static final double WHEEL_DIAMETER = 0.1016; // meters
         public static final double kEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          // (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          1/4096*12/72*56/60*3.14159*0.1016;
 
         public static final double kEncoderDistancePerRevolution =
-            // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER * Math.PI);
+        12.0/72.0*56.0/60.0*3.14159*0.1016;
+
+        public static final double MPSToRPM = 60.0/(kEncoderDistancePerRevolution);
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
-        public static final double RAMP_RATE = 0.3; // 0.33
+        public static final double RAMP_RATE = 0.3; // 0.33 //0.3 0.5
     }
 
     public static final class IntakeConstants {
@@ -78,6 +80,11 @@ public final class Constants {
         /** Ramsete constants */
         public static final double RAMSETE_B = 2;
         public static final double RAMSETE_ZETA = 0.7;
+
+        /** Autobalance multiplier */
+        //* Charge station max tilt = 15 degrees
+        public static final double AUTOBAL_MULTIPLIER = 0.025;
+
     }
     
     /** Universal constants */

@@ -64,7 +64,6 @@ public class DrivePath implements Action {
 
     @Override
     public void initialize() {
-        chassis.changeShifterState(GearShift.HIGH_TORQUE);
         System.out.println("[Auto] Action '" + getClass().getSimpleName() + "' started!");
         if (isFirstPath) {
             chassis.zero();

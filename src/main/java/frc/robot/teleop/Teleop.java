@@ -31,6 +31,7 @@ public class Teleop {
         //chassis.changeShifterState(GearShift.LOW_TORQUE);
 
         chassis.zero();
+        chassis.setBrakeMode(false);
     }
 
     /**

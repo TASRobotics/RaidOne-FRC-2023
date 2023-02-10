@@ -20,7 +20,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //import com.ctre.phoenix.music;
 
 import frc.robot.wrappers.InactiveCompressor;
-import frc.robot.wrappers.InactiveDoubleSolenoid;
 import frc.robot.wrappers.LazyCANSparkMax;
 import frc.robot.wrappers.LogicalTalonSRX;
 
@@ -104,12 +103,7 @@ public class Chassis extends Submodule {
 
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();
-
-    /** Pneumatics */
-    private InactiveCompressor compressor;
-    private final InactiveDoubleSolenoid shifter = new InactiveDoubleSolenoid(
-        ChassisConstants.SHIFTER_HIGH_TORQUE_ID, 
-        ChassisConstants.SHIFTER_LOW_TORQUE_ID);
+   
 
     private Chassis() {}
     private static Chassis instance = null;
@@ -122,7 +116,6 @@ public class Chassis extends Submodule {
 
     @Override
     public void onInit() {
-        compressor = InactiveCompressor.getInstance();
         /** Config factory default for all motors */
         mLeftLeader.restoreFactoryDefaults();
         mLeftFollowerA.restoreFactoryDefaults();
@@ -137,10 +130,10 @@ public class Chassis extends Submodule {
         mRightFollowerA.follow(mRightLeader);
 
         /** Inverts motors */
-        mLeftLeader.setInverted(true);
-        mLeftFollowerA.setInverted(true);
-        mRightLeader.setInverted(false);
-        mRightFollowerA.setInverted(false);
+        mLeftLeader.setInverted(false);
+        mLeftFollowerA.setInverted(false);
+        mRightLeader.setInverted(true);
+        mRightFollowerA.setInverted(true);
 
         /** inverts encoder*/
         encoderL = mLeftLeader.getEncoder();
@@ -170,10 +163,17 @@ public class Chassis extends Submodule {
         */
 
         /** Config Talon PID */
-        SparkMaxPIDController mPIDControllerR = mRightLeader.getPIDController();
-        SparkMaxPIDController mPIDControllerL = mLeftLeader.getPIDController();
+        mPIDControllerR = mRightLeader.getPIDController();
+        mPIDControllerL = mLeftLeader.getPIDController();
         mPIDControllerR.setP(ChassisConstants.kP);
         mPIDControllerL.setP(ChassisConstants.kP);
+        mPIDControllerL.setIZone(ChassisConstants.PID_LOOP_IDX);
+        mPIDControllerR.setIZone(ChassisConstants.PID_LOOP_IDX);
+        //mPIDControllerL.setFF(0.000156);
+        //mPIDControllerR.setFF(0.000156);
+        mPIDControllerL.setOutputRange(-1,1);
+        mPIDControllerR.setOutputRange(-1,1);
+
 
         /** Config after imu init */
         trajectoryFollower = new TrajectoryFollower(ChassisConstants.DRIVE_KINEMATICS);
@@ -189,7 +189,6 @@ public class Chassis extends Submodule {
         mOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0), 0, 0);
 
         setBrakeMode(true);
-        changeShifterState(GearShift.LOW_TORQUE);
 
         /** Camera */
         // UsbCamera cam1 =  CameraServer.startAutomaticCapture(0);
@@ -209,7 +208,6 @@ public class Chassis extends Submodule {
         zero();
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-        changeShifterState(GearShift.LOW_TORQUE);
         setBrakeMode(true);
     }
 
@@ -219,29 +217,33 @@ public class Chassis extends Submodule {
             case OPEN_LOOP:
                 mLeftLeader.set(periodicIO.leftPercent);
                 mRightLeader.set(periodicIO.rightPercent);
-                break;
+                break;  
 
             case PATH_FOLLOWING:
-                mPIDControllerL.setFF(periodicIO.leftFF);
-                mPIDControllerR.setFF(periodicIO.rightFF);
-                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, CANSparkMax.ControlType.kVelocity);
-                mPIDControllerR.setReference(periodicIO.desiredRightVelocity, CANSparkMax.ControlType.kVelocity);
+                //mPIDControllerL.setFF((periodicIO.leftFF));
+                //mPIDControllerR.setFF((periodicIO.rightFF));
+                //System.out.println("ioff: " + (float)(periodicIO.leftFF));
+                //System.out.println("ioff: " + (float)(periodicIO.rightFF));
+                //mPIDControllerL.setFF(ChassisConstants.kV);
+                //mPIDControllerR.setFF(ChassisConstants.kV);
+                mPIDControllerL.setFF(1.0/6000.0);
+                mPIDControllerR.setFF(1.0/6000.0);
+                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
+                mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
+                SmartDashboard.putNumber("input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
+                SmartDashboard.putNumber("applied output", mLeftLeader.getAppliedOutput());
+                SmartDashboard.putNumber("ouput current", mLeftLeader.getOutputCurrent());
+                SmartDashboard.putNumber("desired left" , periodicIO.desiredLeftVelocity);
+                SmartDashboard.putNumber("conversion constant??", ChassisConstants.MPSToRPM);
                 break;
-
-            case AUTOBALANCE:
-                while (true) {
-                    if (periodicIO.pitch >= 5) {
-                        
-                    } else if (periodicIO.pitch <= -5) {
-                        
-                    }
-                    return;
-                }
         }
     }
 
     @Override
     public void update(double timestamp) {
+        SmartDashboard.putNumber("encoderL", encoderL.getPosition());
+        SmartDashboard.putNumber("encoderR", encoderR.getPosition());
+
         // Autobalance
         periodicIO.pitch = mImu.getPitch();
         
@@ -261,12 +263,15 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("actual left vel", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
+        SmartDashboard.putNumber("yaw", mImu.getYaw());
+        SmartDashboard.putNumber("pitch", mImu.getPitch());
 
         SmartDashboard.putNumber("left enc", encoderL.getPosition());
         SmartDashboard.putNumber("Right enc", encoderR.getPosition());
 
         SmartDashboard.putNumber("left vel 1234", encoderL.getVelocity());
         SmartDashboard.putNumber("Right vel 1234", encoderR.getVelocity());
+        
 
 
         if(controlState == ControlState.PATH_FOLLOWING) {
@@ -282,15 +287,13 @@ public class Chassis extends Submodule {
             leftPrevVel = leftVel;
             rightPrevVel = rightVel;
 
-            SmartDashboard.putNumber("desired left vel", -leftVel);
-            SmartDashboard.putNumber("desired right vel", -rightVel);
-
             // periodicIO.leftFF = leftVelController.updateFF(leftVel, leftAccel);
             // periodicIO.rightFF = rightVelController.updateFF(rightVel, rightAccel);
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            setVelocity(leftVel, rightVel);
+            //setVelocity(leftVel, rightVel); WHY DOESN THIS WORK?? it was used in last yrs code???
+            setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
 
@@ -329,20 +332,6 @@ public class Chassis extends Submodule {
         periodicIO.desiredRightVelocity = right;
     }
 
-    /**
-     * Changes the shifter state
-     * 
-     * @param shift shifter setting
-     */
-    public void changeShifterState(GearShift shift) {
-        if(shift == GearShift.HIGH_TORQUE) {
-            shifter.set(Value.kReverse);
-        } else if(shift == GearShift.LOW_TORQUE) {
-            shifter.set(Value.kForward);
-        } else {
-            shifter.set(Value.kOff);
-        }
-    }
 
     /**
      * A better arcade drive

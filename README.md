@@ -3,11 +3,8 @@
 
 to-do:
 
-
-implement new command-based structure (prob like last yr's code)
-
 tune feedforward and PID constants 
 
-add autobal subsequence, start with slow move and imu
+add autobal actions: start with slow move and imu or use PID
 
-try out LVT controller (not needed for autobal)
+try out LVT controller (for pathing)
