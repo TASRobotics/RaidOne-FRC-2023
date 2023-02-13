@@ -83,7 +83,7 @@ public final class Constants {
 
         /** Autobalance multiplier */
         //* Charge station max tilt = 15 degrees
-        public static final double AUTOBAL_MULTIPLIER = 0.025;
+        public static final double AUTOBAL_MULTIPLIER = 0.01;
 
     }
     
