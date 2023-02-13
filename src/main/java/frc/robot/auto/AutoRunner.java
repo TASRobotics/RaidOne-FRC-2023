@@ -17,7 +17,9 @@ public class AutoRunner {
     private AutoSequence[] sequences = {
         new SamplePath(),
         new EmptySequence(),
-        new AutoBalSequence()
+        new AutoBalSequence(),
+        new leftFront(),
+        new ShortTurn()
     };
 
     public AutoRunner(){

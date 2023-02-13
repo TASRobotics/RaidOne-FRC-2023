@@ -232,19 +232,22 @@ public class Chassis extends Submodule {
                 mPIDControllerR.setFF(1.0/6000.0);
                 mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
-                SmartDashboard.putNumber("input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
-                SmartDashboard.putNumber("applied output", mLeftLeader.getAppliedOutput());
-                SmartDashboard.putNumber("ouput current", mLeftLeader.getOutputCurrent());
-                SmartDashboard.putNumber("desired left" , periodicIO.desiredLeftVelocity);
-                SmartDashboard.putNumber("conversion constant??", ChassisConstants.MPSToRPM);
+                SmartDashboard.putNumber("left input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
+                SmartDashboard.putNumber("right input RPM", periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM);
+                SmartDashboard.putNumber("left applied output", mLeftLeader.getAppliedOutput());
+                SmartDashboard.putNumber("left ouput current", mLeftLeader.getOutputCurrent());
+                SmartDashboard.putNumber("right applied output", mRightLeader.getAppliedOutput());
+                SmartDashboard.putNumber("right ouput current", mRightLeader.getOutputCurrent());
+                SmartDashboard.putNumber("desired left vel m/s" , periodicIO.desiredLeftVelocity);
+                SmartDashboard.putNumber("desired right vel m/s" , periodicIO.desiredRightVelocity);
                 break;
         }
     }
 
     @Override
     public void update(double timestamp) {
-        SmartDashboard.putNumber("encoderL", encoderL.getPosition());
-        SmartDashboard.putNumber("encoderR", encoderR.getPosition());
+        SmartDashboard.putNumber("encoderL pos", encoderL.getPosition());
+        SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
         // Autobalance
         periodicIO.pitch = mImu.getPitch();
@@ -265,14 +268,10 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("actual left vel", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
-        SmartDashboard.putNumber("yaw", mImu.getYaw());
         SmartDashboard.putNumber("pitch", mImu.getPitch());
 
-        SmartDashboard.putNumber("left enc", encoderL.getPosition());
-        SmartDashboard.putNumber("Right enc", encoderR.getPosition());
-
-        SmartDashboard.putNumber("left vel 1234", encoderL.getVelocity());
-        SmartDashboard.putNumber("Right vel 1234", encoderR.getVelocity());
+        SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
+        SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
         
 
 
@@ -294,8 +293,8 @@ public class Chassis extends Submodule {
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            //setVelocity(leftVel, rightVel); WHY DOESN THIS WORK?? it was used in last yrs code???
-            setVelocity(periodicIO.leftFF, periodicIO.rightFF);
+            setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
+            //setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
 

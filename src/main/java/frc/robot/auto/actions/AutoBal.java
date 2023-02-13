@@ -13,7 +13,7 @@ public class AutoBal implements Action{
     public int autoBalMode = 0;
 
     //speed modifier multiplies motor speeds by itself, where 1 is the slow base speed used for testing
-    public int speedModifier = 1;
+    public double speedModifier = 1;
     
     /*
     autoBalMode 0 is when robot moves forward until it detects robot is tilting back
@@ -24,23 +24,32 @@ public class AutoBal implements Action{
 
     public boolean isDone(){
         // TODO: Tune/fix this
-        if (prevPitch < Chassis.getInstance().getPeriodicIO().pitch + 0.75
-           && prevPitch > Chassis.getInstance().getPeriodicIO().pitch - 0.75
-           && autoBalMode == 1) {
+        if (
+         //   prevPitch < Chassis.getInstance().getPeriodicIO().pitch + 0.75
+          // && prevPitch > Chassis.getInstance().getPeriodicIO().pitch - 0.75 &&
+           //&& 
+           autoBalMode == 1&& Chassis.getInstance().getPeriodicIO().pitch<initialPitch+2 
+           && Chassis.getInstance().getPeriodicIO().pitch>initialPitch-1
+           //autoBalMode==1&&Chassis.getInstance().getPeriodicIO().pitch<initialPitch+13&&Chassis.getInstance().getPeriodicIO().pitch>initialPitch+11
+           ) {
+            System.out.println("isDone returned true");
             Chassis.getInstance().setPercentSpeed(0, 0);
             return true;
         } else { return false; }
     }
 
     public void update(){
-        speedModifier = 1;
+        System.out.println(autoBalMode);
+        speedModifier = 0.8;
         //NOTE: i have changed autobal multiplier to 0.01 for testing purposes so robot is much slower than usual
         double chassisSpeed = Chassis.getInstance().getPeriodicIO().pitch * AutoConstants.AUTOBAL_MULTIPLIER * speedModifier;
         prevPitch = Chassis.getInstance().getPeriodicIO().pitch;
         System.out.println("AutoBal Running...");
         System.out.println("Pitch: "+Chassis.getInstance().getPeriodicIO().pitch);
         if(autoBalMode==0){
-            Chassis.getInstance().setPercentSpeed(0.05*speedModifier, 0.05*speedModifier);
+            Chassis.getInstance().setPercentSpeed(0.3*speedModifier, 0.3*speedModifier);
+            //SmartDashboard.putNumber("ini+5", initialPitch+5);
+            //SmartDashboard.putNumber("pitch read", Chassis.getInstance().getPeriodicIO().pitch);
             if(Chassis.getInstance().getPeriodicIO().pitch >= initialPitch+5){
                 autoBalMode = 1;
                 Chassis.getInstance().setPercentSpeed(0, 0);
@@ -53,7 +62,7 @@ public class AutoBal implements Action{
 
             } else if (Chassis.getInstance().getPeriodicIO().pitch <= -3) {
                 System.out.println("Head(battery side) tilting up");
-                Chassis.getInstance().setPercentSpeed(-chassisSpeed, -chassisSpeed);
+                Chassis.getInstance().setPercentSpeed(chassisSpeed, chassisSpeed);
 
             }
         }
