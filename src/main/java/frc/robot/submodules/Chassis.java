@@ -256,8 +256,8 @@ public class Chassis extends Submodule {
         periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
 
         // velocity
-        periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution;
-        periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution;
+        periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
+        periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
 
         periodicIO.heading = Rotation2d.fromDegrees(rescale180(mImu.getYaw()));
 
@@ -293,7 +293,7 @@ public class Chassis extends Submodule {
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
+            //setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
             //setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
