@@ -19,7 +19,8 @@ public class AutoRunner {
         new EmptySequence(),
         new AutoBalSequence(),
         new leftFront(),
-        new ShortTurn()
+        new ShortTurn(),
+        new VelControlTestSequence()
     };
 
     public AutoRunner(){
