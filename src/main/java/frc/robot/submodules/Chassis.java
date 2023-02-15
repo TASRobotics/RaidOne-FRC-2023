@@ -293,7 +293,7 @@ public class Chassis extends Submodule {
             periodicIO.leftFF = velocityController.updateFF(leftVel, leftAccel);
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
-            setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
+            //setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
             //setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
