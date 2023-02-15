@@ -7,6 +7,7 @@ import frc.robot.auto.actions.DrivePath;
 import frc.robot.auto.actions.LambdaAction;
 import frc.robot.auto.actions.ActionGroup;
 import frc.robot.auto.actions.AutoBal;
+import frc.robot.auto.actions.AutoBalPID;
 
 import java.util.Arrays;
 
@@ -24,7 +25,7 @@ public class AutoBalSequence extends AutoSequence {
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new AutoBal())
+                new AutoBalPID())
             )
         );
     }

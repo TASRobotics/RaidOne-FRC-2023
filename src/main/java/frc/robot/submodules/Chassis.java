@@ -493,4 +493,12 @@ public class Chassis extends Submodule {
         }
         return trajectoryFollower.isFinished();
     }
+
+    public LazyCANSparkMax getLeftLeader() {
+        return mLeftLeader;
+    }
+
+    public LazyCANSparkMax getRightLeader() {
+        return mRightLeader;
+    }
 }
