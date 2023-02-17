@@ -61,8 +61,9 @@ public class AutoBalPID implements Action{
         initialPitch = Chassis.getInstance().getPeriodicIO().pitch;
 
         //initializing SparkMaxPIDControllers and PID constants
-        pidRight = Chassis.getInstance().getRightLeader().getPIDController();
-        pidLeft = Chassis.getInstance().getLeftLeader().getPIDController();
+        //i commented it out, maybe want to make pidcontroller public?
+        //pidRight = Chassis.getInstance().getRightLeader().getPIDController();
+        //pidLeft = Chassis.getInstance().getLeftLeader().getPIDController();
 
         pidRight.setFF(AutoConstants.AUTOBALPID_KFF);
         pidRight.setP(AutoConstants.AUTOBALPID_KP);

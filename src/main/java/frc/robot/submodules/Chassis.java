@@ -27,8 +27,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.pathing.TrajectoryFollower;
@@ -190,7 +199,7 @@ public class Chassis extends Submodule {
 
         mOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0), 0, 0);
 
-        setBrakeMode(true);
+        setBrakeMode(false);
 
         /** Camera */
         // UsbCamera cam1 =  CameraServer.startAutomaticCapture(0);
@@ -210,7 +219,7 @@ public class Chassis extends Submodule {
         zero();
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-        setBrakeMode(true);
+        setBrakeMode(false);
     }
 
     @Override
@@ -228,7 +237,7 @@ public class Chassis extends Submodule {
                 //System.out.println("ioff: " + (float)(periodicIO.rightFF));
                 //mPIDControllerL.setFF(ChassisConstants.kV);
                 //mPIDControllerR.setFF(ChassisConstants.kV);
-                mPIDControllerL.setFF(1.0/6000.0);
+                mPIDControllerL.setFF(1.0/6000.0); 
                 mPIDControllerR.setFF(1.0/6000.0);
                 mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
@@ -261,12 +270,12 @@ public class Chassis extends Submodule {
 
         periodicIO.heading = Rotation2d.fromDegrees(rescale180(mImu.getYaw()));
 
-        Pose2d updatedPose = updateOdometry();
+        Pose2d updatedPose = updateOdometry();//trajectoryFollower.s().poseMeters;//updateOdometry();
         periodicIO.x = updatedPose.getX();
         periodicIO.y = updatedPose.getY();
         periodicIO.rotation = updatedPose.getRotation();
-        SmartDashboard.putNumber("actual left vel", periodicIO.actualLeftVelocity);
-        SmartDashboard.putNumber("actual right vel", periodicIO.actualRightVelocity);
+        SmartDashboard.putNumber("actual left vel m/s", periodicIO.actualLeftVelocity);
+        SmartDashboard.putNumber("actual right vel m/s", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
         SmartDashboard.putNumber("pitch", mImu.getPitch());
 
@@ -282,6 +291,9 @@ public class Chassis extends Submodule {
             // double rightVel = trajectoryFollower.update(updatedPose).leftMetersPerSecond;
             // double leftVel = trajectoryFollower.update(updatedPose).rightMetersPerSecond;
 
+            SmartDashboard.putNumber("trajectory left", leftVel);
+            SmartDashboard.putNumber("trajectory right", rightVel);
+
             /** Calculate accel */
             double leftAccel = leftVel - leftPrevVel;
             double rightAccel = rightVel - rightPrevVel;
@@ -294,7 +306,7 @@ public class Chassis extends Submodule {
             periodicIO.rightFF = velocityController.updateFF(rightVel, rightAccel);
 
             //setVelocity(leftVel, rightVel); //WHY DOESN THIS WORK?? it was used in last yrs code???
-            //setVelocity(periodicIO.leftFF, periodicIO.rightFF);
+            setVelocity(periodicIO.leftFF, periodicIO.rightFF);
         }
     }
 
@@ -492,13 +504,5 @@ public class Chassis extends Submodule {
             return false;
         }
         return trajectoryFollower.isFinished();
-    }
-
-    public LazyCANSparkMax getLeftLeader() {
-        return mLeftLeader;
-    }
-
-    public LazyCANSparkMax getRightLeader() {
-        return mRightLeader;
     }
 }
