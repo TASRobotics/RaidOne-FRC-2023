@@ -199,7 +199,7 @@ public class Chassis extends Submodule {
 
         mOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0), 0, 0);
 
-        setBrakeMode(false);
+        setBrakeMode(true);
 
         /** Camera */
         // UsbCamera cam1 =  CameraServer.startAutomaticCapture(0);
@@ -219,7 +219,7 @@ public class Chassis extends Submodule {
         zero();
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-        setBrakeMode(false);
+        setBrakeMode(true);
     }
 
     @Override
@@ -274,6 +274,9 @@ public class Chassis extends Submodule {
         periodicIO.x = updatedPose.getX();
         periodicIO.y = updatedPose.getY();
         periodicIO.rotation = updatedPose.getRotation();
+        SmartDashboard.putNumber("x",periodicIO.x);
+        SmartDashboard.putNumber("y",periodicIO.y);
+        SmartDashboard.putNumber("heading deg",periodicIO.heading.getDegrees());
         SmartDashboard.putNumber("actual left vel m/s", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel m/s", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
@@ -321,6 +324,7 @@ public class Chassis extends Submodule {
         mLeftLeader.set(0.0);
         mRightLeader.set(0.0);
         //prob need to change brakemode to coast!
+        setBrakeMode(false);
     }
 
     /**
@@ -469,9 +473,13 @@ public class Chassis extends Submodule {
         if (brake) {
             mRightLeader.setIdleMode(IdleMode.kBrake);
             mLeftLeader.setIdleMode(IdleMode.kBrake);
+            mLeftFollowerA.setIdleMode(IdleMode.kBrake);
+            mRightFollowerA.setIdleMode(IdleMode.kBrake);
         } else {
             mRightLeader.setIdleMode(IdleMode.kCoast);
             mLeftLeader.setIdleMode(IdleMode.kCoast);
+            mLeftFollowerA.setIdleMode(IdleMode.kCoast);
+            mRightFollowerA.setIdleMode(IdleMode.kCoast);
         }
     }
 
