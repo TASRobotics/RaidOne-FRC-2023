@@ -92,9 +92,11 @@ public class Chassis extends Submodule {
     /** Motors */
     private final LazyCANSparkMax mLeftLeader = new LazyCANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
     private final LazyCANSparkMax mLeftFollowerA = new LazyCANSparkMax(ChassisConstants.LEFT_FOLLOWER_A_ID, MotorType.kBrushless);
+    private final LazyCANSparkMax mLeftFollowerB = new LazyCANSparkMax(ChassisConstants.LEFT_FOLLOWER_B_ID, MotorType.kBrushless);
 
     private final LazyCANSparkMax mRightLeader = new LazyCANSparkMax(ChassisConstants.RIGHT_LEADER_ID, MotorType.kBrushless);
     private final LazyCANSparkMax mRightFollowerA = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
+    private final LazyCANSparkMax mRightFollowerB = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
@@ -128,21 +130,30 @@ public class Chassis extends Submodule {
         /** Config factory default for all motors */
         mLeftLeader.restoreFactoryDefaults();
         mLeftFollowerA.restoreFactoryDefaults();
+        mLeftFollowerB.restoreFactoryDefaults();
+
         mRightLeader.restoreFactoryDefaults();
         mRightFollowerA.restoreFactoryDefaults();
+        mRightFollowerB.restoreFactoryDefaults();
 
         /** Config factory default for sensors */
         mImu.configFactoryDefault();
 
         /** Config followers */
         mLeftFollowerA.follow(mLeftLeader);
+        mLeftFollowerB.follow(mLeftLeader);
+
         mRightFollowerA.follow(mRightLeader);
+        mRightFollowerB.follow(mRightLeader);
 
         /** Inverts motors */
         mLeftLeader.setInverted(false);
         mLeftFollowerA.setInverted(false);
+        mLeftFollowerB.setInverted(false);
+        
         mRightLeader.setInverted(true);
         mRightFollowerA.setInverted(true);
+        mRightFollowerB.setInverted(true);
 
         /** inverts encoder*/
         encoderL = mLeftLeader.getEncoder();
@@ -474,12 +485,16 @@ public class Chassis extends Submodule {
             mRightLeader.setIdleMode(IdleMode.kBrake);
             mLeftLeader.setIdleMode(IdleMode.kBrake);
             mLeftFollowerA.setIdleMode(IdleMode.kBrake);
+            mLeftFollowerB.setIdleMode(IdleMode.kBrake);
             mRightFollowerA.setIdleMode(IdleMode.kBrake);
+            mRightFollowerB.setIdleMode(IdleMode.kBrake);
         } else {
             mRightLeader.setIdleMode(IdleMode.kCoast);
             mLeftLeader.setIdleMode(IdleMode.kCoast);
             mLeftFollowerA.setIdleMode(IdleMode.kCoast);
+            mLeftFollowerB.setIdleMode(IdleMode.kCoast);
             mRightFollowerA.setIdleMode(IdleMode.kCoast);
+            mRightFollowerB.setIdleMode(IdleMode.kCoast);
         }
     }
 
