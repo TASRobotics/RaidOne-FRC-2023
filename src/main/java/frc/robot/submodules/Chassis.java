@@ -239,6 +239,8 @@ public class Chassis extends Submodule {
             case OPEN_LOOP:
                 mLeftLeader.set(periodicIO.leftPercent);
                 mRightLeader.set(periodicIO.rightPercent);
+                System.out.println(periodicIO.leftPercent);
+                System.out.println(periodicIO.rightPercent);
                 break;  
 
             case PATH_FOLLOWING:
