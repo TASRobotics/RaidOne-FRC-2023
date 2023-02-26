@@ -8,19 +8,17 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 //import com.ctre.phoenix.music;
 
 import frc.robot.wrappers.InactiveCompressor;
-import frc.robot.wrappers.LazyCANSparkMax;
 import frc.robot.wrappers.LogicalTalonSRX;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -90,13 +88,14 @@ public class Chassis extends Submodule {
     }
 
     /** Motors */
-    private final LazyCANSparkMax mLeftLeader = new LazyCANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
-    private final LazyCANSparkMax mLeftFollowerA = new LazyCANSparkMax(ChassisConstants.LEFT_FOLLOWER_A_ID, MotorType.kBrushless);
-    private final LazyCANSparkMax mLeftFollowerB = new LazyCANSparkMax(ChassisConstants.LEFT_FOLLOWER_B_ID, MotorType.kBrushless);
+    private final CANSparkMax mLeftLeader = new CANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
+    private final CANSparkMax mLeftFollowerA = new CANSparkMax(ChassisConstants.LEFT_FOLLOWER_A_ID, MotorType.kBrushless);
+    private final CANSparkMax mLeftFollowerB = new CANSparkMax(ChassisConstants.LEFT_FOLLOWER_B_ID, MotorType.kBrushless);
 
-    private final LazyCANSparkMax mRightLeader = new LazyCANSparkMax(ChassisConstants.RIGHT_LEADER_ID, MotorType.kBrushless);
-    private final LazyCANSparkMax mRightFollowerA = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
-    private final LazyCANSparkMax mRightFollowerB = new LazyCANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
+    private final CANSparkMax mRightLeader = new CANSparkMax(ChassisConstants.RIGHT_LEADER_ID, MotorType.kBrushless);
+    private final CANSparkMax mRightFollowerA = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
+    private final CANSparkMax mRightFollowerB = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
+
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
@@ -147,13 +146,8 @@ public class Chassis extends Submodule {
         mRightFollowerB.follow(mRightLeader);
 
         /** Inverts motors */
-        mLeftLeader.setInverted(false);
-        mLeftFollowerA.setInverted(false);
-        mLeftFollowerB.setInverted(false);
-        
-        mRightLeader.setInverted(true);
-        mRightFollowerA.setInverted(true);
-        mRightFollowerB.setInverted(true);
+        mLeftLeader.setInverted(true);        
+        mRightLeader.setInverted(false);
 
         /** inverts encoder*/
         encoderL = mLeftLeader.getEncoder();
@@ -252,8 +246,8 @@ public class Chassis extends Submodule {
                 //mPIDControllerR.setFF(ChassisConstants.kV);
                 mPIDControllerL.setFF(1.0/6000.0); 
                 mPIDControllerR.setFF(1.0/6000.0);
-                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
-                mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, CANSparkMax.ControlType.kVelocity);
+                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM, ControlType.kVelocity);
+                mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, ControlType.kVelocity);
                 SmartDashboard.putNumber("left input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
                 SmartDashboard.putNumber("right input RPM", periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM);
                 SmartDashboard.putNumber("left applied output", mLeftLeader.getAppliedOutput());
