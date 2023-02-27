@@ -19,6 +19,8 @@ import com.revrobotics.CANSparkMax;
 //import com.ctre.phoenix.music;
 
 import frc.robot.wrappers.InactiveCompressor;
+import frc.robot.wrappers.LazyVictorSPX;
+import frc.robot.wrappers.LazyTalonSRX;
 import frc.robot.wrappers.LogicalTalonSRX;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -88,14 +90,13 @@ public class Chassis extends Submodule {
     }
 
     /** Motors */
-    private final CANSparkMax mLeftLeader = new CANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
-    private final CANSparkMax mLeftFollowerA = new CANSparkMax(ChassisConstants.LEFT_FOLLOWER_A_ID, MotorType.kBrushless);
-    private final CANSparkMax mLeftFollowerB = new CANSparkMax(ChassisConstants.LEFT_FOLLOWER_B_ID, MotorType.kBrushless);
+    public final LazyTalonSRX mLeftLeader = new LazyTalonSRX(ChassisConstants.LEFT_LEADER_ID);
+    private final LazyVictorSPX mLeftFollowerA = new LazyVictorSPX(ChassisConstants.LEFT_FOLLOWER_A_ID);
+    private final LazyVictorSPX mLeftFollowerB = new LazyVictorSPX(ChassisConstants.LEFT_FOLLOWER_B_ID);
 
-    private final CANSparkMax mRightLeader = new CANSparkMax(ChassisConstants.RIGHT_LEADER_ID, MotorType.kBrushless);
-    private final CANSparkMax mRightFollowerA = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
-    private final CANSparkMax mRightFollowerB = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
-
+    public final LazyTalonSRX mRightLeader = new LazyTalonSRX(ChassisConstants.RIGHT_LEADER_ID);
+    private final LazyVictorSPX mRightFollowerA = new LazyVictorSPX(ChassisConstants.RIGHT_FOLLOWER_A_ID);    
+    private final LazyVictorSPX mRightFollowerB = new LazyVictorSPX(ChassisConstants.RIGHT_FOLLOWER_B_ID);    
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
@@ -127,13 +128,12 @@ public class Chassis extends Submodule {
     @Override
     public void onInit() {
         /** Config factory default for all motors */
-        mLeftLeader.restoreFactoryDefaults();
-        mLeftFollowerA.restoreFactoryDefaults();
-        mLeftFollowerB.restoreFactoryDefaults();
-
-        mRightLeader.restoreFactoryDefaults();
-        mRightFollowerA.restoreFactoryDefaults();
-        mRightFollowerB.restoreFactoryDefaults();
+        mLeftLeader.configFactoryDefault();
+        mLeftFollowerA.configFactoryDefault();
+        mLeftFollowerB.configFactoryDefault();
+        mRightLeader.configFactoryDefault();
+        mRightFollowerA.configFactoryDefault();
+        mRightFollowerB.configFactoryDefault();
 
         /** Config factory default for sensors */
         mImu.configFactoryDefault();
@@ -141,28 +141,31 @@ public class Chassis extends Submodule {
         /** Config followers */
         mLeftFollowerA.follow(mLeftLeader);
         mLeftFollowerB.follow(mLeftLeader);
-
         mRightFollowerA.follow(mRightLeader);
         mRightFollowerB.follow(mRightLeader);
 
         /** Inverts motors */
-        mLeftLeader.setInverted(true);        
-        mRightLeader.setInverted(false);
+        mLeftLeader.setInverted(false);
+        mLeftFollowerA.setInverted(false);
+        mLeftFollowerB.setInverted(false);
+        mRightLeader.setInverted(true);
+        mRightFollowerA.setInverted(true);
+        mRightFollowerB.setInverted(true);
 
         /** inverts encoder*/
-        encoderL = mLeftLeader.getEncoder();
+        //encoderL = mLeftLeader.getEncoder();
         //encoderL.setInverted(true);
-        encoderR = mRightLeader.getEncoder();
+        //encoderR = mRightLeader.getEncoder();
         //encoderR.setInverted(false);
 
-        mLeftLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
-        mRightLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
+        mLeftLeader.enableVoltageCompensation(true);//Constants.VOLTAGE_COMPENSATION);
+        mRightLeader.enableVoltageCompensation(true);//Constants.VOLTAGE_COMPENSATION);
 
         /** Config ramp rate */
-        mLeftLeader.setOpenLoopRampRate(ChassisConstants.RAMP_RATE);
-        mLeftLeader.setClosedLoopRampRate(0);
-        mRightLeader.setOpenLoopRampRate(ChassisConstants.RAMP_RATE);
-        mRightLeader.setClosedLoopRampRate(0);
+        //mLeftLeader.setOpenLoopRampRate(ChassisConstants.RAMP_RATE);
+        //mLeftLeader.setClosedLoopRampRate(0);
+        //mRightLeader.setOpenLoopRampRate(ChassisConstants.RAMP_RATE);
+        //mRightLeader.setClosedLoopRampRate(0);
 
         /**
          * would someone kindly explain what this is ^^
@@ -175,10 +178,11 @@ public class Chassis extends Submodule {
         mRightLeader.configPeakCurrentLimit(80, Constants.TIMEOUT_MS);
         mRightLeader.configPeakCurrentDuration(1000, Constants.TIMEOUT_MS);
         */
-        mLeftLeader.setSmartCurrentLimit(45);
-        mRightLeader.setSmartCurrentLimit(45);
+        //mLeftLeader.setSmartCurrentLimit(45);
+        //mRightLeader.setSmartCurrentLimit(45);
 
         /** Config Talon PID */
+        /* 
         mPIDControllerR = mRightLeader.getPIDController();
         mPIDControllerL = mLeftLeader.getPIDController();
         mPIDControllerR.setP(ChassisConstants.kP);
@@ -189,6 +193,7 @@ public class Chassis extends Submodule {
         //mPIDControllerR.setFF(0.000156);
         mPIDControllerL.setOutputRange(-1,1);
         mPIDControllerR.setOutputRange(-1,1);
+        */
 
 
         /** Config after imu init */
@@ -231,10 +236,8 @@ public class Chassis extends Submodule {
     public void run() {
         switch(controlState) {
             case OPEN_LOOP:
-                mLeftLeader.set(periodicIO.leftPercent);
-                mRightLeader.set(periodicIO.rightPercent);
-                System.out.println(periodicIO.leftPercent);
-                System.out.println(periodicIO.rightPercent);
+                mLeftLeader.set(ControlMode.PercentOutput, periodicIO.leftPercent);
+                mRightLeader.set(ControlMode.PercentOutput, periodicIO.rightPercent);
                 break;  
 
             case PATH_FOLLOWING:
@@ -250,30 +253,32 @@ public class Chassis extends Submodule {
                 mPIDControllerR.setReference(periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM, ControlType.kVelocity);
                 SmartDashboard.putNumber("left input RPM", periodicIO.desiredLeftVelocity*ChassisConstants.MPSToRPM);
                 SmartDashboard.putNumber("right input RPM", periodicIO.desiredRightVelocity*ChassisConstants.MPSToRPM);
+                /* 
                 SmartDashboard.putNumber("left applied output", mLeftLeader.getAppliedOutput());
                 SmartDashboard.putNumber("left ouput current", mLeftLeader.getOutputCurrent());
                 SmartDashboard.putNumber("right applied output", mRightLeader.getAppliedOutput());
                 SmartDashboard.putNumber("right ouput current", mRightLeader.getOutputCurrent());
                 SmartDashboard.putNumber("desired left vel m/s" , periodicIO.desiredLeftVelocity);
                 SmartDashboard.putNumber("desired right vel m/s" , periodicIO.desiredRightVelocity);
+                */
                 break;
         }
     }
 
     @Override
     public void update(double timestamp) {
-        SmartDashboard.putNumber("encoderL pos", encoderL.getPosition());
-        SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
+        //SmartDashboard.putNumber("encoderL pos", encoderL.getPosition());
+        //SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
         // Autobalance
         periodicIO.pitch = mImu.getPitch();
         
-        periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
-        periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
+        //periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
+        //periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerRevolution;
 
         // velocity
-        periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
-        periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
+        //periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
+        //periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerRevolution/60;
 
         periodicIO.heading = Rotation2d.fromDegrees(rescale180(mImu.getYaw()));
 
@@ -289,8 +294,8 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
         SmartDashboard.putNumber("pitch", mImu.getPitch());
 
-        SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
-        SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
+        //SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
+        //SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
         
 
 
@@ -328,8 +333,8 @@ public class Chassis extends Submodule {
         periodicIO.leftPercent = 0.0;
         periodicIO.rightPercent = 0.0;
 
-        mLeftLeader.set(0.0);
-        mRightLeader.set(0.0);
+        mLeftLeader.set(ControlMode.PercentOutput, 0.0);
+        mRightLeader.set(ControlMode.PercentOutput, 0.0);
         //prob need to change brakemode to coast!
         setBrakeMode(false);
     }
@@ -424,8 +429,8 @@ public class Chassis extends Submodule {
 
     /** Resets drive encoders to 0 */
     public void resetEncoders() {
-        encoderL.setPosition(0);
-        encoderR.setPosition(0);
+        //encoderL.setPosition(0);
+        //encoderR.setPosition(0);
     }
 
     /** Zeros IMU heading */
@@ -477,6 +482,7 @@ public class Chassis extends Submodule {
      * @param brake whether to brake or not
      */
     public void setBrakeMode(boolean brake) {
+        /* 
         if (brake) {
             mRightLeader.setIdleMode(IdleMode.kBrake);
             mLeftLeader.setIdleMode(IdleMode.kBrake);
@@ -492,6 +498,7 @@ public class Chassis extends Submodule {
             mRightFollowerA.setIdleMode(IdleMode.kCoast);
             mRightFollowerB.setIdleMode(IdleMode.kCoast);
         }
+        */
     }
 
     /**
@@ -523,5 +530,13 @@ public class Chassis extends Submodule {
             return false;
         }
         return trajectoryFollower.isFinished();
+    }
+
+    public SparkMaxPIDController getPIDController(boolean isLeft) {
+        if (isLeft){
+            return mPIDControllerL;
+        } else {
+            return mPIDControllerR;
+        }
     }
 }

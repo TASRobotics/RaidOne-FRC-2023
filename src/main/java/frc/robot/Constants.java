@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public final class Constants {
     public static final class ChassisConstants {
         /** Motors */
-        public static final int LEFT_LEADER_ID = 2;
-        public static final int LEFT_FOLLOWER_A_ID = 4;
-        public static final int LEFT_FOLLOWER_B_ID = 6;
+        public static final int LEFT_LEADER_ID = 1;
+        public static final int LEFT_FOLLOWER_A_ID = 2;
+        public static final int LEFT_FOLLOWER_B_ID = 3;
 
-        public static final int RIGHT_LEADER_ID = 1;
-        public static final int RIGHT_FOLLOWER_A_ID = 3;
-        public static final int RIGHT_FOLLOWER_B_ID = 5;
+        public static final int RIGHT_LEADER_ID = 11;
+        public static final int RIGHT_FOLLOWER_A_ID = 12;
+        public static final int RIGHT_FOLLOWER_B_ID = 13;
 
         /** Sensors */
         public static final int IMU_ID = 0;
