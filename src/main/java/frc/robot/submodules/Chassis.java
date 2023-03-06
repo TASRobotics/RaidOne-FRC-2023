@@ -96,6 +96,7 @@ public class Chassis extends Submodule {
     private final CANSparkMax mRightFollowerA = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
     private final CANSparkMax mRightFollowerB = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
 
+    private final CANSparkMax mWeightshifter = new CANSparkMax(ChassisConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
@@ -134,6 +135,8 @@ public class Chassis extends Submodule {
         mRightLeader.restoreFactoryDefaults();
         mRightFollowerA.restoreFactoryDefaults();
         mRightFollowerB.restoreFactoryDefaults();
+
+        mWeightshifter.restoreFactoryDefaults();
 
         /** Config factory default for sensors */
         mImu.configFactoryDefault();
@@ -190,6 +193,12 @@ public class Chassis extends Submodule {
         mPIDControllerL.setOutputRange(-1,1);
         mPIDControllerR.setOutputRange(-1,1);
 
+        /** Config weight shifter motor */
+        mWeightshifter.setIdleMode(IdleMode.kBrake);
+        mWeightshifter.setSmartCurrentLimit(45);
+        mWeightshifter.setInverted(false);
+        mWeightshifter.setSoftLimit(SoftLimitDirection.kForward, 45);
+        mWeightshifter.setSoftLimit(SoftLimitDirection.kReverse, 45);
 
         /** Config after imu init */
         trajectoryFollower = new TrajectoryFollower(ChassisConstants.DRIVE_KINEMATICS);
@@ -233,6 +242,7 @@ public class Chassis extends Submodule {
             case OPEN_LOOP:
                 mLeftLeader.set(periodicIO.leftPercent);
                 mRightLeader.set(periodicIO.rightPercent);
+                mWeightshifter.set(periodicIO.weightSpeed);
                 System.out.println(periodicIO.leftPercent);
                 System.out.println(periodicIO.rightPercent);
                 break;  
