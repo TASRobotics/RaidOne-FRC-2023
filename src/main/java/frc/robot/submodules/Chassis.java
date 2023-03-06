@@ -14,6 +14,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 //import com.ctre.phoenix.music;
@@ -25,7 +26,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -156,10 +156,10 @@ public class Chassis extends Submodule {
         mLeftLeader.setInverted(true);        
         mRightLeader.setInverted(false);
 
-        /** inverts encoder*/
-        encoderL = mLeftLeader.getEncoder();
+        /** Config encoder */
+        mLeftLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        mRightLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
         //encoderL.setInverted(true);
-        encoderR = mRightLeader.getEncoder();
         //encoderR.setInverted(false);
 
         mLeftLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
@@ -495,17 +495,9 @@ public class Chassis extends Submodule {
         if (brake) {
             mRightLeader.setIdleMode(IdleMode.kBrake);
             mLeftLeader.setIdleMode(IdleMode.kBrake);
-            mLeftFollowerA.setIdleMode(IdleMode.kBrake);
-            mLeftFollowerB.setIdleMode(IdleMode.kBrake);
-            mRightFollowerA.setIdleMode(IdleMode.kBrake);
-            mRightFollowerB.setIdleMode(IdleMode.kBrake);
         } else {
             mRightLeader.setIdleMode(IdleMode.kCoast);
             mLeftLeader.setIdleMode(IdleMode.kCoast);
-            mLeftFollowerA.setIdleMode(IdleMode.kCoast);
-            mLeftFollowerB.setIdleMode(IdleMode.kCoast);
-            mRightFollowerA.setIdleMode(IdleMode.kCoast);
-            mRightFollowerB.setIdleMode(IdleMode.kCoast);
         }
     }
 
