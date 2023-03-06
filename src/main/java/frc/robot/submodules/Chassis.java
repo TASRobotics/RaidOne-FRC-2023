@@ -27,6 +27,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -111,6 +112,9 @@ public class Chassis extends Submodule {
     private double leftPrevVel, rightPrevVel;
     private SparkMaxPIDController mPIDControllerR;
     private SparkMaxPIDController mPIDControllerL;
+
+    /** Teleop acceleration limit */
+    SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
 
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();
@@ -380,6 +384,7 @@ public class Chassis extends Submodule {
         // turn = JoystickUtils.deadband(JoystickUtils.monomialScale(turn, ChassisConstants.MONOMIAL_SCALE, 1));
 
         throttle = JoystickUtils.deadband(throttle);
+        throttle = driveFilter.calculate(throttle); //Math.signum(throttle) * Math.pow(throttle, 2);
         turn = JoystickUtils.deadband(turn);
 
         // Compute velocity, right stick = curvature if no quickturn, else power
