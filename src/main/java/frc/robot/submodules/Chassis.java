@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -70,6 +71,8 @@ public class Chassis extends Submodule {
         // Outputs
         public double leftPercent = 0.0;
         public double rightPercent = 0.0;
+
+        public static double weightSpeed = 0.0;
 
         public double desiredLeftVelocity = 0.0;
         public double desiredRightVelocity = 0.0;
@@ -203,6 +206,8 @@ public class Chassis extends Submodule {
         mWeightshifter.setInverted(false);
         mWeightshifter.setSoftLimit(SoftLimitDirection.kForward, 45);
         mWeightshifter.setSoftLimit(SoftLimitDirection.kReverse, 45);
+        PIDController WeightPID = new PIDController(0.0, 0.0, 0.0);
+
 
         /** Config after imu init */
         trajectoryFollower = new TrajectoryFollower(ChassisConstants.DRIVE_KINEMATICS);

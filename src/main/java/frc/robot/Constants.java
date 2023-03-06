@@ -17,11 +17,11 @@ public final class Constants {
         public static final int WEIGHTSHIFTER_ID = 0;
 
         /** Sensors */
-        public static final int IMU_ID = 0;
+        public static final int IMU_ID = 0; //! add pigeon
 
         /** Pneumatics */
         public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
-        public static final int SHIFTER_HIGH_TORQUE_ID = 7;
+        public static final int SHIFTER_HIGH_TORQUE_ID = 7; //! change ids
         public static final int SHIFTER_LOW_TORQUE_ID = 8;
 
         /** Velocity PID */
@@ -30,23 +30,25 @@ public final class Constants {
         public static final double kV = 1.5;
         //1/(6000/60*0.04965108462); around 0.2 smth
         public static final double kA = 0; //0.0003; //14.0
-        public static final double kP = 0.000025; //0.3
+        public static final double kP = 0.0000; //0.3 //0.000025
 
+        /** Slew rate limiter for drive accel */
+        public static final double SLEW_FILTER = 0.5;
         
         /** Drive kinematics (for ramsete) */
-        public static final double TRACK_WIDTH = 0.6;
+        public static final double TRACK_WIDTH = 0.58; //! tune
         public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
             new DifferentialDriveKinematics(TRACK_WIDTH);
 
         public static final int ENCODER_CPR = 4096; // counts per rotation 8129
-        public static final double WHEEL_DIAMETER = 0.1016; // meters
+        public static final double WHEEL_DIAMETER = 0.1016; // meters //0.1016 //0.1524
         public static final double kEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
           // (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
-          1/4096*12/72*56/60*3.14159*0.1016;
-
+          1/4096*12/60*24/32/24*3.14159*0.1524; //! regearing
+        
         public static final double kEncoderDistancePerRevolution =
-        12.0/72.0*56.0/60.0*3.14159*0.1016;
+        12/60*24/32/24*3.14159*0.1524; //! regearing
 
         public static final double MPSToRPM = 60.0/(kEncoderDistancePerRevolution);
             
@@ -98,6 +100,13 @@ public final class Constants {
         public static final double AUTOBALPID_KMAXOUTPUT = 1;
         public static final double AUTOBALPID_KMINOUTPUT = -1;
 
+    }
+
+    public static final class WeightConstants {
+        /** Weightshifter position constants */
+        public static final double WEIGHT_FRONT = 0.0;
+        public static final double WEIGHT_CENTER = 0.0;
+        public static final double WEIGHT_REAR = 0.0;
     }
     
     /** Universal constants */
