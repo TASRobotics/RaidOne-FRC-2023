@@ -160,8 +160,8 @@ public class Chassis extends Submodule {
         mRightLeader.setInverted(false);
 
         /** Config encoder */
-        mLeftLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
-        mRightLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        encoderL = mLeftLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        encoderR = mRightLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
         //encoderL.setInverted(true);
         //encoderR.setInverted(false);
 
