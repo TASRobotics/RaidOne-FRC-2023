@@ -1,12 +1,10 @@
 package frc.robot.teleop;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.submodules.Chassis;
-
-//previous state for the gearshifter
-boolean pregss = false;
 
 public class Teleop {
 
@@ -55,7 +53,22 @@ public class Teleop {
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
         
+        if (master.getYButtonPressed()) {
+            chassis.gearShifter.set(Value.kForward);
+        }
 
+        if (master.getXButtonPressed()) {
+            chassis.gearShifter.set(Value.kReverse);
+        }
+
+        if (master.getAButtonPressed()) {
+            chassis.gearShifter.set(Value.kOff);
+        }
+        
+        if (master.getBButtonPressed()) {
+            chassis.gearShifter.toggle();
+        }
+/*
         shiftState = master.getLeftBumper() || partner.getAButton();
         if(shiftState && !prevShiftState) {
             shift = !shift;
@@ -66,7 +79,7 @@ public class Teleop {
             //chassis.changeShifterState(GearShift.HIGH_TORQUE);
         }
         prevShiftState = shiftState;
-        SmartDashboard.putString("Shift state", shift ? "low torque" : "high torque");
+        SmartDashboard.putString("Shift state", shift ? "low torque" : "high torque"); */
 
         // driveState = master.getAButton();
         // if(driveState && !prevDriveState) {
@@ -108,12 +121,5 @@ public class Teleop {
         //intake.setState(partner.getLeftBumper() || partner.getRightBumper() ? IntakeState.DOWN : IntakeState.UP);
         //intake.setPercentSpeed(partner.getRightTriggerAxis() - partner.getLeftTriggerAxis());
 
-        //current state for the gearshifter
-        boolean gss = master.getYButtonPressed();
-
-        if (gss != pregss && getYButtonPressed){
-            chassis.gearShifter.toggle();
-            pregss = gss;
-        }
     }
 }

@@ -33,6 +33,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -44,9 +48,6 @@ import frc.robot.pathing.TrajectoryFollower;
 import frc.robot.pathing.VelocityController;
 import frc.robot.utils.JoystickUtils;
 import frc.robot.Constants;
-
-//import the solenoids
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
  * attempt to change chassis from talon to sparkmax!
@@ -119,8 +120,10 @@ public class Chassis extends Submodule {
     private SparkMaxPIDController mPIDControllerR;
     private SparkMaxPIDController mPIDControllerL;
 
-    //the gearShifter solenoid
-    public DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 7)
+    // Pneumatics
+    public PneumaticHub pH = new PneumaticHub(ChassisConstants.PH_ID); 
+    public DoubleSolenoid gearShifter = pH.makeDoubleSolenoid(ChassisConstants.SHIFTER_HIGH_TORQUE_ID, ChassisConstants.SHIFTER_LOW_TORQUE_ID); //TODO Test if 1/7 is high/low torque and change
+    public Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
     /** Teleop acceleration limit */
     SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
@@ -249,6 +252,8 @@ public class Chassis extends Submodule {
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
         setBrakeMode(true);
+        phCompressor.enableDigital();
+        gearShifter.set(Value.kForward);
     }
 
     @Override
