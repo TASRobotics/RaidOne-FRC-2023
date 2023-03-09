@@ -17,7 +17,7 @@ public final class Constants {
         public static final int WEIGHTSHIFTER_ID = 0;
 
         /** Sensors */
-        public static final int IMU_ID = 0; //! add pigeon
+        public static final int IMU_ID = 0;
 
         /** Pneumatics */
         public static final int PH_ID = 1;  
