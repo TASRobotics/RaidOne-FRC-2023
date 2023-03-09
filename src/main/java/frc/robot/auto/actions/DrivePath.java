@@ -2,7 +2,6 @@ package frc.robot.auto.actions;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.submodules.Chassis;
-import frc.robot.submodules.Chassis.GearShift;
 import frc.robot.utils.FinishConditionInterface;
 
 /** Action for following a path. */

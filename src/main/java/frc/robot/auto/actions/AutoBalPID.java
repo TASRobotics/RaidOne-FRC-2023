@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.submodules.Chassis;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ChassisConstants;
-import frc.robot.wrappers.LazyCANSparkMax;
-import java.util.Arrays;
 
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;

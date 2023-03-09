@@ -1,13 +1,9 @@
 package frc.robot.auto.sequences;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.auto.actions.DrivePath;
-import frc.robot.auto.actions.LambdaAction;
 import frc.robot.auto.actions.ActionGroup;
-import frc.robot.auto.actions.AutoBal;
-import java.util.List;
 
 import java.util.Arrays;
 

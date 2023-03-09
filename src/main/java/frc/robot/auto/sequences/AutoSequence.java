@@ -1,7 +1,6 @@
 package frc.robot.auto.sequences;
 
 import java.util.LinkedList;
-import java.util.AbstractQueue;
 import java.util.Queue;
 
 import frc.robot.auto.actions.Action;
