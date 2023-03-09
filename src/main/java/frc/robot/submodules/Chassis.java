@@ -400,7 +400,7 @@ public class Chassis extends Submodule {
         // turn = JoystickUtils.deadband(JoystickUtils.monomialScale(turn, ChassisConstants.MONOMIAL_SCALE, 1));
 
         throttle = JoystickUtils.deadband(throttle);
-        throttle = driveFilter.calculate(throttle); //Math.signum(throttle) * Math.pow(throttle, 2);
+        //throttle = driveFilter.calculate(throttle); //Math.signum(throttle) * Math.pow(throttle, 2);
         turn = JoystickUtils.deadband(turn);
 
         // Compute velocity, right stick = curvature if no quickturn, else power
