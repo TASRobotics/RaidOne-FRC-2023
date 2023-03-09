@@ -45,6 +45,9 @@ import frc.robot.pathing.VelocityController;
 import frc.robot.utils.JoystickUtils;
 import frc.robot.Constants;
 
+//import the solenoids
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 /**
  * attempt to change chassis from talon to sparkmax!
  * https://docs.revrobotics.com/sparkmax/software-resources/migrating-ctre-to-rev
@@ -115,6 +118,9 @@ public class Chassis extends Submodule {
     private double leftPrevVel, rightPrevVel;
     private SparkMaxPIDController mPIDControllerR;
     private SparkMaxPIDController mPIDControllerL;
+
+    //the gearShifter solenoid
+    public DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 7)
 
     /** Teleop acceleration limit */
     SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);

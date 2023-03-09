@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.submodules.Chassis;
 
+//previous state for the gearshifter
+boolean pregss = false;
+
 public class Teleop {
 
     private static Teleop instance = null;
@@ -104,5 +107,13 @@ public class Teleop {
         }
         //intake.setState(partner.getLeftBumper() || partner.getRightBumper() ? IntakeState.DOWN : IntakeState.UP);
         //intake.setPercentSpeed(partner.getRightTriggerAxis() - partner.getLeftTriggerAxis());
+
+        //current state for the gearshifter
+        boolean gss = master.getYButtonPressed();
+
+        if (gss != pregss && getYButtonPressed){
+            chassis.gearShifter.toggle();
+            pregss = gss;
+        }
     }
 }
