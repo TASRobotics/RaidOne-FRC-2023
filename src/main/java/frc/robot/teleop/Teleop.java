@@ -1,7 +1,6 @@
 package frc.robot.teleop;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.submodules.Chassis;
@@ -29,7 +28,6 @@ public class Teleop {
      * Runs at the start of teleop.
      */
     public void onStart() {
-        //chassis.changeShifterState(GearShift.LOW_TORQUE);
 
         chassis.zero();
         chassis.setBrakeMode(false);
@@ -38,7 +36,6 @@ public class Teleop {
     /**
      * Continuously loops in teleop.
      */
-    boolean shiftState = false, prevShiftState = false, driveState = false, prevDriveState = false, switchFront = false, prevSwitchFront = false;
     // int drive = 0;
     boolean shift = false;
     int val = 1;
@@ -52,34 +49,6 @@ public class Teleop {
         prevSwitchFront = switchFront;
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
-        
-        if (master.getYButtonPressed()) {
-            chassis.gearShifter.set(Value.kForward);
-        }
-
-        if (master.getXButtonPressed()) {
-            chassis.gearShifter.set(Value.kReverse);
-        }
-
-        if (master.getAButtonPressed()) {
-            chassis.gearShifter.set(Value.kOff);
-        }
-        
-        if (master.getBButtonPressed()) {
-            chassis.gearShifter.toggle();
-        }
-/*
-        shiftState = master.getLeftBumper() || partner.getAButton();
-        if(shiftState && !prevShiftState) {
-            shift = !shift;
-        }
-        if(shift) {
-            //chassis.changeShifterState(GearShift.LOW_TORQUE);
-        } else {
-            //chassis.changeShifterState(GearShift.HIGH_TORQUE);
-        }
-        prevShiftState = shiftState;
-        SmartDashboard.putString("Shift state", shift ? "low torque" : "high torque"); */
 
         // driveState = master.getAButton();
         // if(driveState && !prevDriveState) {

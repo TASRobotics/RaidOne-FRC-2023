@@ -1,5 +1,6 @@
 package frc.robot.submodules;
 
+import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
@@ -18,12 +19,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.pathing.TrajectoryFollower;
@@ -67,7 +63,6 @@ public class Chassis extends Submodule {
         public double rightFF = 0.0;
     }
 
-    /** Enum controlling gear shift */
     public static enum GearShift {
         HIGH_TORQUE, LOW_TORQUE, OFF
     }
@@ -101,11 +96,6 @@ public class Chassis extends Submodule {
     private double leftPrevVel, rightPrevVel;
     private SparkMaxPIDController mPIDControllerR;
     private SparkMaxPIDController mPIDControllerL;
-
-    // Pneumatics
-    public PneumaticHub pH = new PneumaticHub(ChassisConstants.PH_ID); 
-    public DoubleSolenoid gearShifter = pH.makeDoubleSolenoid(ChassisConstants.SHIFTER_HIGH_TORQUE_ID, ChassisConstants.SHIFTER_LOW_TORQUE_ID); //TODO Test if 1/7 is high/low torque and change
-    public Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
     /** Teleop acceleration limit */
     SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
@@ -234,8 +224,6 @@ public class Chassis extends Submodule {
         resetOdometry(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
         setBrakeMode(true);
-        phCompressor.enableDigital();
-        gearShifter.set(Value.kForward);
     }
 
     @Override

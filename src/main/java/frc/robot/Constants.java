@@ -19,12 +19,6 @@ public final class Constants {
         /** Sensors */
         public static final int IMU_ID = 0;
 
-        /** Pneumatics */
-        public static final int PH_ID = 1;  
-        public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
-        public static final int SHIFTER_HIGH_TORQUE_ID = 7;
-        public static final int SHIFTER_LOW_TORQUE_ID = 1;
-
         /** Velocity PID */
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
