@@ -83,6 +83,7 @@ public class Chassis extends Submodule {
     private final CANSparkMax mRightFollowerB = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
 
     private final CANSparkMax mWeightshifter = new CANSparkMax(ChassisConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
+    private final SparkMaxPIDController mWeightPID = mWeightshifter.getPIDController();
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
