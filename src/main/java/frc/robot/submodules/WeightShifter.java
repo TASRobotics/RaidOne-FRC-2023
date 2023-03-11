@@ -78,22 +78,39 @@ public class WeightShifter extends Submodule{
      */
     public void zero() {}
 
+    /**
+     * Resets weight shifter to position 0
+     */
     public void reset() {
         mWeightPID.setReference(WeightConstants.WEIGHT_REAR, ControlType.kSmartMotion);
     }
-
+    
+    /**
+     * @return Returns the position of weight shifter
+     */
     public double getPosition() {
         return mWeightEncoder.getPosition();
     }
 
+    /**
+     * Moves the weight shifter to desired position
+     * @param position Value of desired position [-1, 27]
+     */
     public void setPosition(double position) {
         mWeightPID.setReference(position, ControlType.kSmartMotion);
     }
 
+    /**
+     * Moves the weight shifter at a desired velocity
+     * @param velocity Value of desired velocity [-1, 1]
+     */
     public void setVelocity(double velocity) {
         mWeightShifter.set(velocity);
     }
 
+    /**
+     * Moves the weight block at a high velocity for inertia
+     */
     public void punch() {
         if (mWeightEncoder.getPosition() >= 26) {
             mWeightShifter.set(-0.8);
