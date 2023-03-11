@@ -57,7 +57,9 @@ public class Teleop {
             val *= -1;
         }
         prevSwitchFront = switchFront;
-        chassis.curvatureDrive(leftY, Chassis.getInstance().getFilter(-master.getRightX() * 0.5), Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        
+        chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+
         if (master.getAButtonPressed()) {
             weightShifter.punch();
         }
