@@ -109,8 +109,8 @@ public final class Constants {
         public static final int SMART_MOTION_ID = 0;
         public static final double kP = 0.00002499999936844688;
         public static final double kF = 1/6000;
-        public static final double kMAX_VELOCITY = 6000.0;
-        public static final double kMAX_ACCEL = 22000.0;
+        public static final double MAX_VELOCITY = 6000.0;
+        public static final double MAX_ACCEL = 22000.0;
 
         /** Weightshifter PID constants (Position) */
         public static final int POSITION_ID = 1;

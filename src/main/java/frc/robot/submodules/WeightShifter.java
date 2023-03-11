@@ -16,9 +16,14 @@ public class WeightShifter extends Submodule{
     private SparkMaxPIDController mWeightPID;
     private RelativeEncoder mWeightEncoder;
     
-    public WeightShifter(int ID, MotorType type) {
-        mWeightShifter = new CANSparkMax(ID, type);
-    };
+    private WeightShifter() {}
+    private static WeightShifter instance = null;
+    public static WeightShifter getInstance() {
+        if (instance == null) {
+            instance = new WeightShifter();
+        }
+        return instance;
+    }
     
     /**
      * Called at the start of autonomous or teleop.
