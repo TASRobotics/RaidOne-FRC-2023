@@ -27,7 +27,7 @@ public class Teleop {
     private XboxController partner = new XboxController(1);
 
     private static Chassis chassis = Chassis.getInstance();
-    //private static WeightShifter weightShifter = new WeightShifter(WeightConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
+    private static WeightShifter weightShifter = WeightShifter.getInstance();
 
     /**
      * Runs at the start of teleop.
@@ -59,11 +59,11 @@ public class Teleop {
         prevSwitchFront = switchFront;
         chassis.curvatureDrive(leftY, Chassis.getInstance().getFilter(-master.getRightX() * 0.5), Math.abs(master.getLeftY()) < Constants.DEADBAND);
         if (master.getAButtonPressed()) {
-            //weightShifter.punch();
+            weightShifter.punch();
         }
 
         if (master.getBButtonPressed()) {
-            //weightShifter.reset();
+            weightShifter.reset();
         }
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());

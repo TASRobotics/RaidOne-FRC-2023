@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.submodules.SubmoduleManager;
+import frc.robot.submodules.WeightShifter;
 import frc.robot.submodules.Chassis;
 import frc.robot.auto.AutoRunner;
 import frc.robot.teleop.Teleop;
@@ -22,6 +23,8 @@ public class Robot extends TimedRobot {
   private AutoRunner autoRunner;
   private static final Teleop teleop = Teleop.getInstance();
 
+  private static final WeightShifter weightShifter = WeightShifter.getInstance();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -30,7 +33,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // register all submodules here
     submoduleManager.setSubmodules(
-      chassis
+      chassis,
+	  weightShifter
     );
     submoduleManager.onInit();
 

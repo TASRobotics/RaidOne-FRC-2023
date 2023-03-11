@@ -12,7 +12,7 @@ import frc.robot.Constants.WeightConstants;
 
 public class WeightShifter extends Submodule{
 
-    private final CANSparkMax mWeightShifter;
+    private CANSparkMax mWeightShifter = new CANSparkMax(WeightConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
     private SparkMaxPIDController mWeightPID;
     private RelativeEncoder mWeightEncoder;
     
@@ -48,8 +48,8 @@ public class WeightShifter extends Submodule{
         mWeightShifter.setInverted(false);
         mWeightShifter.setSoftLimit(SoftLimitDirection.kForward, 27);
         mWeightShifter.setSoftLimit(SoftLimitDirection.kReverse, -1);
-        mWeightPID.setSmartMotionMaxVelocity(WeightConstants.kMAX_VELOCITY, WeightConstants.SMART_MOTION_ID);
-        mWeightPID.setSmartMotionMaxAccel(WeightConstants.kMAX_ACCEL, WeightConstants.SMART_MOTION_ID);
+        mWeightPID.setSmartMotionMaxVelocity(WeightConstants.MAX_VELOCITY, WeightConstants.SMART_MOTION_ID);
+        mWeightPID.setSmartMotionMaxAccel(WeightConstants.MAX_ACCEL, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setP(WeightConstants.kP, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setFF(WeightConstants.kF, WeightConstants.SMART_MOTION_ID);
     }
