@@ -1,9 +1,13 @@
 package frc.robot.teleop;
 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.WeightConstants;
 import frc.robot.submodules.Chassis;
+import frc.robot.submodules.WeightShifter;
 
 public class Teleop {
 
@@ -23,6 +27,7 @@ public class Teleop {
     private XboxController partner = new XboxController(1);
 
     private static Chassis chassis = Chassis.getInstance();
+    private static WeightShifter weightShifter = new WeightShifter(WeightConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
 
     /**
      * Runs at the start of teleop.
@@ -53,6 +58,14 @@ public class Teleop {
         }
         prevSwitchFront = switchFront;
         chassis.curvatureDrive(leftY, Chassis.getInstance().getFilter(-master.getRightX() * 0.5), Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        if (master.getAButtonPressed()) {
+            weightShifter.punch();
+        }
+
+        if (master.getBButtonPressed()) {
+            weightShifter.reset();
+        }
+
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
         // driveState = master.getAButton();
@@ -95,23 +108,7 @@ public class Teleop {
         //intake.setState(partner.getLeftBumper() || partner.getRightBumper() ? IntakeState.DOWN : IntakeState.UP);
         //intake.setPercentSpeed(partner.getRightTriggerAxis() - partner.getLeftTriggerAxis());
 
-        // Falcon punch
-        boolean weightState = master.getYButton();
-
-        if(master.getYButtonPressed()) {
-            System.out.println("y pressed");
-            if (Chassis.getInstance().getWeightPos() >= 26){
-                Chassis.getInstance().setWeightPos(true);
-                //System.out.println("weightshifter moved to 1");
-                
-            } else {
-                Chassis.getInstance().setWeightPos(false);
-                //System.out.println("weightshifter moved to 27");;
-            }
-            prevWeightState = weightState;
-            }
-            }
+        
         
     }
-
- 
+}

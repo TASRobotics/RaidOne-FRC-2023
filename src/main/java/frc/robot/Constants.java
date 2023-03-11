@@ -14,8 +14,6 @@ public final class Constants {
         public static final int RIGHT_FOLLOWER_A_ID = 3;
         public static final int RIGHT_FOLLOWER_B_ID = 5;
 
-        public static final int WEIGHTSHIFTER_ID = 60;
-
         /** Sensors */
         public static final int IMU_ID = 0;
 
@@ -98,10 +96,26 @@ public final class Constants {
     }
 
     public static final class WeightConstants {
+
+        /** Weightshifter motor ID */
+        public static final int WEIGHTSHIFTER_ID = 60;
+
         /** Weightshifter position constants */
-        public static final double WEIGHT_FRONT = 0.0;
-        public static final double WEIGHT_CENTER = 0.0;
-        public static final double WEIGHT_REAR = 0.0;
+        public static final double WEIGHT_FRONT = 27.0;
+        public static final double WEIGHT_CENTER = 13.0;
+        public static final double WEIGHT_REAR = -1.0;
+
+        /** Weighshifter PID constants (Smartmotion) */
+        public static final int SMART_MOTION_ID = 0;
+        public static final double kP = 0.00002499999936844688;
+        public static final double kF = 1/6000;
+        public static final double kMAX_VELOCITY = 6000.0;
+        public static final double kMAX_ACCEL = 22000.0;
+
+        /** Weightshifter PID constants (Position) */
+        public static final int POSITION_ID = 1;
+        public static final double POS_kP = 0.0;
+        public static final double POS_kF = 0.0;
     }
     
     /** Universal constants */
