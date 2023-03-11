@@ -346,6 +346,10 @@ public class Chassis extends Submodule {
         periodicIO.rightPercent = right;
     }
 
+    public double getFilter(double input){
+        return driveFilter.calculate(input);
+    }
+
     /**
      * Sets velocity speed [-1, 1]
      * 

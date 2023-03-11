@@ -49,7 +49,7 @@ public class Teleop {
             val *= -1;
         }
         prevSwitchFront = switchFront;
-        chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        chassis.curvatureDrive(leftY, Chassis.getInstance().getFilter(-master.getRightX() * 0.5), Math.abs(master.getLeftY()) < Constants.DEADBAND);
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
         // driveState = master.getAButton();
