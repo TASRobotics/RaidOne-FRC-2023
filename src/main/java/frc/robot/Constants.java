@@ -14,7 +14,7 @@ public final class Constants {
         public static final int RIGHT_FOLLOWER_A_ID = 3;
         public static final int RIGHT_FOLLOWER_B_ID = 5;
 
-        public static final int WEIGHTSHIFTER_ID = 0;
+        public static final int WEIGHTSHIFTER_ID = 7;
 
         /** Sensors */
         public static final int IMU_ID = 0;

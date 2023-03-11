@@ -184,11 +184,16 @@ public class Chassis extends Submodule {
 
         /** Config weight shifter motor */
         mWeightshifter.setIdleMode(IdleMode.kBrake);
-        mWeightshifter.setSmartCurrentLimit(45);
-        mWeightshifter.setInverted(false);
-        mWeightshifter.setSoftLimit(SoftLimitDirection.kForward, 45);
-        mWeightshifter.setSoftLimit(SoftLimitDirection.kReverse, 45);
-        PIDController WeightPID = new PIDController(0.0, 0.0, 0.0);
+        mWeightshifter.setSmartCurrentLimit(40);
+        mWeightshifter.setInverted(true);
+        mWeightshifter.setSoftLimit(SoftLimitDirection.kForward, 27);
+        mWeightshifter.setSoftLimit(SoftLimitDirection.kReverse, -1);
+        mWeightPID.setSmartMotionMaxAccel(22000, 0);
+        mWeightPID.setSmartMotionMaxVelocity(6000, 0);
+        mWeightPID.setP(0.00002499999936844688, 0);
+        mWeightPID.setFF(1/6000, 0);
+        //PIDController WeightPID = new PIDController(0.0, 0.0, 0.0);
+        
 
 
         /** Config after imu init */
@@ -333,6 +338,15 @@ public class Chassis extends Submodule {
         mRightLeader.set(0.0);
         //prob need to change brakemode to coast!
         setBrakeMode(false);
+    }
+
+    /**
+     * Desired position for the weigh to go to using SmartMotion
+     * 
+     * @param position Position of weight [-1, 27]
+     */
+    public void setWeightPos(double position) {
+        mWeightPID.setReference(position, ControlType.kSmartMotion);
     }
 
     /**
