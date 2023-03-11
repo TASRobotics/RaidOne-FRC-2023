@@ -1,6 +1,7 @@
 package frc.robot.submodules;
 
 import com.ctre.phoenix.sensors.Pigeon2Configuration;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
@@ -98,7 +99,7 @@ public class Chassis extends Submodule {
     private SparkMaxPIDController mPIDControllerL;
 
     /** Teleop acceleration limit */
-    SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
+    private SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
 
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();

@@ -36,6 +36,8 @@ public class Teleop {
     /**
      * Continuously loops in teleop.
      */
+    boolean shiftState = false, prevShiftState = false, driveState = false, prevDriveState = false, switchFront = false, prevSwitchFront = false;
+
     // int drive = 0;
     boolean shift = false;
     int val = 1;
