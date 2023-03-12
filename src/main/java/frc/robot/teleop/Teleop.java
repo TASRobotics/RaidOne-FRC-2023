@@ -50,6 +50,10 @@ public class Teleop {
 
     boolean prevWeightState = false;
 
+    double weightSpeed = 0.0;
+    double avgTriggerR = 0.0;
+    double avgTriggerL = 0.0;
+
     public void onLoop() {
         double leftY = master.getLeftY() * val * 0.9;
         switchFront = master.getRightStickButton();
@@ -60,13 +64,30 @@ public class Teleop {
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
 
-        if (master.getAButtonPressed()) {
+        if (master.getAButtonPressed() || partner.getAButtonPressed()) {
             weightShifter.punch();
         }
 
-        if (master.getBButtonPressed()) {
+        if (master.getBButtonPressed() || partner.getBButtonPressed()) {
             weightShifter.reset();
         }
+
+        if (master.getRightBumper()) {
+            weightShifter.setVelocity(0.5);
+        } else if (master.getLeftBumper()) {
+            weightShifter.setVelocity(-0.5);
+        }
+
+        avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
+        avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
+        
+        if (avgTriggerR > avgTriggerL) {
+            weightSpeed = avgTriggerR;
+        } else if (avgTriggerR < avgTriggerL) {
+            weightSpeed = -avgTriggerL;
+        } else { weightSpeed = 0; }
+
+        weightShifter.setVelocity(weightSpeed);
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
