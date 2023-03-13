@@ -22,10 +22,10 @@ public final class Constants {
         /** Velocity PID */
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
-        public static final double kV = 0.3;
+        public static final double kV = 2.8; //2.8
         //1/(6000/60*0.04965108462); around 0.2 smth
-        public static final double kA = 0; //0.0003; //14.0
-        public static final double kP = 0.0000; //0.3 //0.000025
+        public static final double kA = 10.0; //0.0003; //10.0
+        public static final double kP = 0.00001; //0.3 //0.000025
 
         /** Slew rate limiter for drive accel */
         public static final double SLEW_FILTER = 0.5;
@@ -39,7 +39,7 @@ public final class Constants {
         public static final double WHEEL_DIAMETER = 0.1524; // meters //0.1016 //0.1524
         public static final double kEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-          (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          (WHEEL_DIAMETER * Math.PI) / (double) 360;
           //1/4096*12/60*24/32/24*3.14159*0.1524; //! regearing
         
         public static final double kEncoderDistancePerRevolution =
