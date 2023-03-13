@@ -346,7 +346,7 @@ public class Chassis extends Submodule {
         mLeftLeader.set(0.0);
         mRightLeader.set(0.0);
         //prob need to change brakemode to coast!
-        setBrakeMode(false);
+        setBrakeMode(true);
     }
 
     /**
