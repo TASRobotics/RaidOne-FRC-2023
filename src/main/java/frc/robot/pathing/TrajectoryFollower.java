@@ -4,6 +4,7 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -58,9 +59,9 @@ public class TrajectoryFollower {
         PathPlannerState sampled = (PathPlannerState) currentTrajectory.sample(time);
         System.out.println("Sampled: " + sampled.toString() + " | Actual: " + currentPose.toString());
         var targetWheelSpeeds = kinematics.toWheelSpeeds(
-            controller.calculate(currentPose, sampled)
+           controller.calculate(currentPose, sampled)
         );
-        //var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocity.getRadians()));
+        //var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocityRadPerSec));
         return targetWheelSpeeds;
     }
 
