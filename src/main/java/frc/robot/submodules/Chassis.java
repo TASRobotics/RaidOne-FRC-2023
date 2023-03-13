@@ -469,9 +469,18 @@ public class Chassis extends Submodule {
         if (brake) {
             mRightLeader.setIdleMode(IdleMode.kBrake);
             mLeftLeader.setIdleMode(IdleMode.kBrake);
+            mRightFollowerA.setIdleMode(IdleMode.kBrake);
+            mRightFollowerB.setIdleMode(IdleMode.kBrake);
+            mLeftFollowerA.setIdleMode(IdleMode.kBrake);
+            mLeftFollowerB.setIdleMode(IdleMode.kBrake);
+
         } else {
             mRightLeader.setIdleMode(IdleMode.kCoast);
             mLeftLeader.setIdleMode(IdleMode.kCoast);
+            mRightFollowerA.setIdleMode(IdleMode.kCoast);
+            mRightFollowerB.setIdleMode(IdleMode.kCoast);
+            mLeftFollowerA.setIdleMode(IdleMode.kCoast);
+            mLeftFollowerB.setIdleMode(IdleMode.kCoast);
         }
     }
 
