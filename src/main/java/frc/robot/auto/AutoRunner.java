@@ -20,7 +20,7 @@ public class AutoRunner {
         new AutoBalSequence(),
         new leftFront(),
         new ShortTurn(),
-        new VelControlTestSequence()
+        new ConeDrop(),
     };
 
     public AutoRunner(){

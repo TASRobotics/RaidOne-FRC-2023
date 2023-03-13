@@ -10,7 +10,7 @@ import java.util.Arrays;
 import com.pathplanner.lib.PathPlanner;
 
 public class SamplePath extends AutoSequence {
-    private static final String name = "Test path";
+    private static final String name = "New New Path";
 
     private static final Trajectory path1 = PathPlanner.loadPath(name, AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
 
