@@ -80,6 +80,10 @@ public class Chassis extends Submodule {
     private final CANSparkMax mRightFollowerA = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_A_ID, MotorType.kBrushless);    
     private final CANSparkMax mRightFollowerB = new CANSparkMax(ChassisConstants.RIGHT_FOLLOWER_B_ID, MotorType.kBrushless);
 
+    private final CANSparkMax mWeightShifter = new CANSparkMax(ChassisConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
+    private final SparkMaxPIDController mWeightPID = mWeightShifter.getPIDController();
+    private final RelativeEncoder  mWeightEncoder = mWeightShifter.getEncoder();
+
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
     private RelativeEncoder encoderL;
@@ -120,6 +124,8 @@ public class Chassis extends Submodule {
         mRightLeader.restoreFactoryDefaults();
         mRightFollowerA.restoreFactoryDefaults();
         mRightFollowerB.restoreFactoryDefaults();
+
+        mWeightShifter.restoreFactoryDefaults();
 
         /** Config factory default for sensors */
         mImu.configFactoryDefault();
@@ -176,6 +182,20 @@ public class Chassis extends Submodule {
         mPIDControllerL.setOutputRange(-1,1);
         mPIDControllerR.setOutputRange(-1,1);
 
+        /** Config weight shifter motor */
+        mWeightShifter.setIdleMode(IdleMode.kBrake);
+        mWeightShifter.setSmartCurrentLimit(40);
+        mWeightShifter.setInverted(true);
+        mWeightShifter.setSoftLimit(SoftLimitDirection.kForward, 27);
+        mWeightShifter.setSoftLimit(SoftLimitDirection.kReverse, -1);
+        mWeightPID.setSmartMotionMaxAccel(22000, 0);
+        mWeightPID.setSmartMotionMaxVelocity(6000, 0);
+        mWeightPID.setP(0.00002499999936844688, 0);
+        mWeightPID.setFF(1/6000, 0);
+        //PIDController WeightPID = new PIDController(0.0, 0.0, 0.0);
+        
+
+
         /** Config after imu init */
         trajectoryFollower = new TrajectoryFollower(ChassisConstants.DRIVE_KINEMATICS);
         // leftVelController = new VelocityController(ChassisConstants.LEFT_kV, ChassisConstants.LEFT_kA, ChassisConstants.LEFT_kP);
@@ -218,6 +238,7 @@ public class Chassis extends Submodule {
             case OPEN_LOOP:
                 mLeftLeader.set(periodicIO.leftPercent);
                 mRightLeader.set(periodicIO.rightPercent);
+                //mWeightShifter.set(periodicIO.weightSpeed);
                 System.out.println(periodicIO.leftPercent);
                 System.out.println(periodicIO.rightPercent);
                 break;  
@@ -277,6 +298,13 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
         SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
         
+        if (getWeightPos() >= 27){
+            mWeightShifter.set(0);         //System.out.println("weightshifter moved to 1");
+            
+        } else if(getWeightPos()<-1){
+            //System.out.println("weightshifter moved to 27");;
+            mWeightShifter.set(0);  
+        }
 
         if(controlState == ControlState.PATH_FOLLOWING) {
             /** WHY DO I NEED TO MAKE THIS NEGATIVE!?! */
@@ -316,6 +344,25 @@ public class Chassis extends Submodule {
         mRightLeader.set(0.0);
         //prob need to change brakemode to coast!
         setBrakeMode(false);
+    }
+
+    /**
+     * Desired position for the weigh to go to using SmartMotion
+     * 
+     * @param position Position of weight [-1, 27]
+     */
+    public void setWeightPos(boolean reverse) {
+        //mWeightPID.setReference(position, ControlType.kSmartMotion);
+        if(reverse==false) mWeightShifter.set(1);
+        else mWeightShifter.set(-1);
+    }
+
+    public double getWeightPos(){
+        return mWeightEncoder.getPosition();
+    }
+
+    public void falconPunch() {
+        
     }
 
     /**
