@@ -113,9 +113,9 @@ public class WeightShifter extends Submodule{
      */
     public void punch() {
         if (mWeightEncoder.getPosition() >= 26) {
-            mWeightShifter.set(-0.8);
-        } else if (mWeightEncoder.getPosition() <= 2) {
             mWeightShifter.set(0.8);
+        } else if (mWeightEncoder.getPosition() <= 2) {
+            mWeightShifter.set(-0.8);
         }
     }
 
