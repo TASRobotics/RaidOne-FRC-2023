@@ -100,7 +100,6 @@ public class Chassis extends Submodule {
 
     /** Teleop acceleration limit */
     private SlewRateLimiter driveFilter = new SlewRateLimiter(ChassisConstants.SLEW_FILTER);
-
     private ControlState controlState = ControlState.OPEN_LOOP;
     private PeriodicIO periodicIO = new PeriodicIO();
    
