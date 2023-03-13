@@ -72,9 +72,9 @@ public class Teleop {
             weightShifter.reset();
         }
 
-        if (master.getRightBumper()) {
+        if (master.getRightBumper() || partner.getRightBumper()) {
             weightShifter.setVelocity(0.5);
-        } else if (master.getLeftBumper()) {
+        } else if (master.getLeftBumper() || partner.getRightBumper()) {
             weightShifter.setVelocity(-0.5);
         }
 
