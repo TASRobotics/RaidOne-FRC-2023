@@ -62,6 +62,7 @@ public class Teleop {
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
 
         if (master.getAButtonPressed() || partner.getAButtonPressed()) {
+            System.out.println("punched");
             weightShifter.punch();
         }
 

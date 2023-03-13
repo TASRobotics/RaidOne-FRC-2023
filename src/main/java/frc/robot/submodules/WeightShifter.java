@@ -30,6 +30,7 @@ public class WeightShifter extends Submodule{
      * 
      * @param timestamp
      */
+    @Override
     public void onStart(double timestamp) {
         stop();
     }
@@ -37,6 +38,7 @@ public class WeightShifter extends Submodule{
     /**
      * Called once when the submodule is initialized.
      */
+    @Override
     public void onInit() {
         mWeightShifter.restoreFactoryDefaults();
 
@@ -52,6 +54,7 @@ public class WeightShifter extends Submodule{
         mWeightPID.setSmartMotionMaxAccel(WeightConstants.MAX_ACCEL, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setP(WeightConstants.kP, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setFF(WeightConstants.kF, WeightConstants.SMART_MOTION_ID);
+        mWeightPID.setFeedbackDevice(mWeightEncoder);
     }
 
     /**
@@ -68,6 +71,7 @@ public class WeightShifter extends Submodule{
     /**
      * Stops the submodule.
      */
+    @Override
     public void stop() {
         reset();
         mWeightShifter.set(0);
@@ -88,7 +92,7 @@ public class WeightShifter extends Submodule{
     /**
      * @return Returns the position of weight shifter
      */
-    public double getPosition() {
+    public double getWeightPos() {
         return mWeightEncoder.getPosition();
     }
 
@@ -112,10 +116,10 @@ public class WeightShifter extends Submodule{
      * Moves the weight block at a high velocity for inertia
      */
     public void punch() {
-        if (mWeightEncoder.getPosition() >= 26) {
-            mWeightShifter.set(0.8);
-        } else if (mWeightEncoder.getPosition() <= 2) {
+        if (getWeightPos() >= 26) {
             mWeightShifter.set(-0.8);
+        } else if (getWeightPos() <= 2) {
+            mWeightShifter.set(0.8);
         }
     }
 

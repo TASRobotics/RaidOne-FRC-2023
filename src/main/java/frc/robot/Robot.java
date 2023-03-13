@@ -33,7 +33,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // register all submodules here
     submoduleManager.setSubmodules(
-      chassis
+      chassis, 
+      weightShifter
     );
     submoduleManager.onInit();
 
