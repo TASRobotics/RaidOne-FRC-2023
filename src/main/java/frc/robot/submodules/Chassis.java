@@ -150,12 +150,10 @@ public class Chassis extends Submodule {
         //encoderR = mRightLeader.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
         //encoderL.setInverted(true);
         //encoderR.setInverted(false);
-        encoderL.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        encoderR.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         encoderL.configSensorDirection(false);
-        encoderR.configSensorDirection(false);
-        encoderL.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-        encoderR.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        encoderR.configSensorDirection(true);
+        encoderL.configSensorInitializationStrategy(SensorInitializationStrategy.BootToZero);
+        encoderR.configSensorInitializationStrategy(SensorInitializationStrategy.BootToZero);
 
         mLeftLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
         mRightLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
