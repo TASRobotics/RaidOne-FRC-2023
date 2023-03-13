@@ -1,11 +1,8 @@
 package frc.robot.teleop;
 
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Constants.WeightConstants;
 import frc.robot.submodules.Chassis;
 import frc.robot.submodules.WeightShifter;
 
@@ -50,6 +47,10 @@ public class Teleop {
 
     boolean prevWeightState = false;
 
+    double weightSpeed = 0.0;
+    double avgTriggerR = 0.0;
+    double avgTriggerL = 0.0;
+
     public void onLoop() {
         double leftY = master.getLeftY() * val * 0.9;
         switchFront = master.getRightStickButton();
@@ -59,7 +60,7 @@ public class Teleop {
         prevSwitchFront = switchFront;
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
-/*
+
         if (master.getAButtonPressed() || partner.getAButtonPressed()) {
             weightShifter.punch();
         }
@@ -83,7 +84,7 @@ public class Teleop {
             weightSpeed = -avgTriggerL;
         } else { weightSpeed = 0; }
 
-        weightShifter.setVelocity(weightSpeed); */
+        weightShifter.setVelocity(weightSpeed);
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
@@ -126,23 +127,7 @@ public class Teleop {
         }
         //intake.setState(partner.getLeftBumper() || partner.getRightBumper() ? IntakeState.DOWN : IntakeState.UP);
         //intake.setPercentSpeed(partner.getRightTriggerAxis() - partner.getLeftTriggerAxis());
-
-        // Falcon punch
-        boolean weightState = master.getYButton();
-
-        if(master.getYButtonPressed()) {
-            System.out.println("y pressed");
-            if (Chassis.getInstance().getWeightPos() >= 26){
-                Chassis.getInstance().setWeightPos(true);
-                //System.out.println("weightshifter moved to 1");
-                
-            } else {
-                Chassis.getInstance().setWeightPos(false);
-                //System.out.println("weightshifter moved to 27");;
-            }
-            prevWeightState = weightState;
-            }
-            }
+        }
         
     }
 

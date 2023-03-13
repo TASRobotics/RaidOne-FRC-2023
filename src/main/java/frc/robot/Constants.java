@@ -22,7 +22,7 @@ public final class Constants {
         /** Velocity PID */
         public static final int PID_LOOP_IDX = 0;
         public static final double kS = 0.0;
-        public static final double kV = 1.5;
+        public static final double kV = 0.3;
         //1/(6000/60*0.04965108462); around 0.2 smth
         public static final double kA = 0; //0.0003; //14.0
         public static final double kP = 0.0000; //0.3 //0.000025
@@ -36,11 +36,11 @@ public final class Constants {
             new DifferentialDriveKinematics(TRACK_WIDTH);
 
         public static final int ENCODER_CPR = 4096; // counts per rotation 8129
-        public static final double WHEEL_DIAMETER = 0.1016; // meters //0.1016 //0.1524
+        public static final double WHEEL_DIAMETER = 0.1524; // meters //0.1016 //0.1524
         public static final double kEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-          // (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
-          1/4096*12/60*24/32/24*3.14159*0.1524; //! regearing
+          (WHEEL_DIAMETER * Math.PI) / (double) ENCODER_CPR;
+          //1/4096*12/60*24/32/24*3.14159*0.1524; //! regearing
         
         public static final double kEncoderDistancePerRevolution =
         12/60*24/32/24*3.14159*0.1524; //! regearing

@@ -58,9 +58,9 @@ public class TrajectoryFollower {
         PathPlannerState sampled = (PathPlannerState) currentTrajectory.sample(time);
         System.out.println("Sampled: " + sampled.toString() + " | Actual: " + currentPose.toString());
         var targetWheelSpeeds = kinematics.toWheelSpeeds(
-            controller.calculate(sampled.poseMeters, sampled)
+            controller.calculate(currentPose, sampled)
         );
-        // var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocity.getRadians()));
+        //var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocity.getRadians()));
         return targetWheelSpeeds;
     }
 
