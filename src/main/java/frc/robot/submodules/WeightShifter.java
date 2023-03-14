@@ -15,6 +15,7 @@ public class WeightShifter extends Submodule{
     private CANSparkMax mWeightShifter = new CANSparkMax(WeightConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
     private SparkMaxPIDController mWeightPID;
     private RelativeEncoder mWeightEncoder;
+    private double desiredVel = 0;
     
     private WeightShifter() {}
     private static WeightShifter instance = null;
@@ -32,7 +33,7 @@ public class WeightShifter extends Submodule{
      */
     @Override
     public void onStart(double timestamp) {
-        stop();
+        //stop();
     }
 
     /**
@@ -66,7 +67,9 @@ public class WeightShifter extends Submodule{
      * Runs components in the submodule that have continuously changing 
      * inputs.
      */
-    public void run() {}
+    public void run() {
+        mWeightShifter.set(desiredVel);
+    }
 
     /**
      * Stops the submodule.
@@ -109,7 +112,7 @@ public class WeightShifter extends Submodule{
      * @param velocity Value of desired velocity [-1, 1]
      */
     public void setVelocity(double velocity) {
-        mWeightShifter.set(velocity);
+        desiredVel = velocity;
     }
 
     /**
@@ -117,9 +120,9 @@ public class WeightShifter extends Submodule{
      */
     public void punch() {
         if (getWeightPos() >= 26) {
-            mWeightShifter.set(-0.8);
+            desiredVel = -1;
         } else if (getWeightPos() <= 2) {
-            mWeightShifter.set(0.8);
+            desiredVel = 1;
         }
     }
 

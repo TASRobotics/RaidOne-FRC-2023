@@ -66,26 +66,30 @@ public class Teleop {
             weightShifter.punch();
         }
 
-        if (master.getBButtonPressed() || partner.getBButtonPressed()) {
+        else if (master.getBButtonPressed() || partner.getBButtonPressed()) {
             weightShifter.reset();
         }
 
-        if (master.getRightBumper() || partner.getRightBumper()) {
+        else if (master.getRightBumper() || partner.getRightBumper()) {
             weightShifter.setVelocity(0.5);
         } else if (master.getLeftBumper() || partner.getRightBumper()) {
             weightShifter.setVelocity(-0.5);
         }
 
-        avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
-        avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
-        
-        if (avgTriggerR > avgTriggerL) {
-            weightSpeed = avgTriggerR;
-        } else if (avgTriggerR < avgTriggerL) {
-            weightSpeed = -avgTriggerL;
-        } else { weightSpeed = 0; }
+        else if(master.getRightTriggerAxis()>0.1||master.getLeftTriggerAxis()>0.1||
+        partner.getRightTriggerAxis()>0.1||partner.getLeftTriggerAxis()>0.1)
+        {
+            avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
+            avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
+            
+            if (avgTriggerR > avgTriggerL) {
+                weightSpeed = avgTriggerR;
+            } else if (avgTriggerR < avgTriggerL) {
+                weightSpeed = -avgTriggerL;
+            } else { weightSpeed = 0; }
 
-        weightShifter.setVelocity(weightSpeed);
+            weightShifter.setVelocity(weightSpeed);
+        }
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 

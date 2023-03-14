@@ -349,7 +349,6 @@ public class Chassis extends Submodule {
 
         mLeftLeader.set(0.0);
         mRightLeader.set(0.0);
-        //prob need to change brakemode to coast!
         setBrakeMode(true);
     }
 
@@ -367,10 +366,6 @@ public class Chassis extends Submodule {
     // public double getWeightPos(){
         // return mWeightEncoder.getPosition();
     // }
-
-    public void falconPunch() {
-        
-    }
 
     /**
      * Sets percent speed [-1, 1]
