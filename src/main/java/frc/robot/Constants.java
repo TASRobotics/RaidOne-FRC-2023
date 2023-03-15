@@ -49,7 +49,7 @@ public final class Constants {
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
-        public static final double RAMP_RATE = 0.35;
+        public static final double RAMP_RATE = 0.2;
     }
 
     public static final class IntakeConstants {
