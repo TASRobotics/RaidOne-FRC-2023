@@ -65,20 +65,18 @@ public class Teleop {
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
         if (master.getAButtonPressed() || partner.getAButtonPressed()) {
-            System.out.println("punched");
-            if (weightShifter.getWeightPos() >= 26) {
-                System.out.println("in if 1");
-                weightShifter.desiredVel = -1;             
+            if (weightShifter.getWeightPos() >= 13) {
+                weightShifter.setVelocity(-1);           
             } else if (weightShifter.getWeightPos() <= 2) {
-                System.out.println("in if 2");
-                weightShifter.desiredVel = 1;
+                weightShifter.setVelocity(1);
             }
-            //weightShifter.setVelocity(0);
         }
 
         else if (master.getBButtonPressed() || partner.getBButtonPressed()) {
             weightShifter.reset();
         }
+
+        if (master.getXButtonPressed()) { weightShifter.desiredVel = 0; }
         
         // if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
             // weightSpeed = avgTriggerR;
