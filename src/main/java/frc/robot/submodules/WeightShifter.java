@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.WeightConstants;
 
 public class WeightShifter extends Submodule{
@@ -61,7 +62,9 @@ public class WeightShifter extends Submodule{
     /**
      * Reads cached inputs & calculate outputs.
      */
-    public void update(double timestamp) {}
+    public void update(double timestamp) {
+        SmartDashboard.putNumber("Weight desiredvel", desiredVel);
+    }
     
     /**
      * Runs components in the submodule that have continuously changing 
@@ -120,8 +123,10 @@ public class WeightShifter extends Submodule{
      */
     public void punch() {
         if (getWeightPos() >= 26) {
-            desiredVel = -1;
+            System.out.println("in if 1");
+            desiredVel = -1;             
         } else if (getWeightPos() <= 2) {
+            System.out.println("in if 2");
             desiredVel = 1;
         }
     }

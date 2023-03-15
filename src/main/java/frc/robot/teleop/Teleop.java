@@ -60,36 +60,30 @@ public class Teleop {
         prevSwitchFront = switchFront;
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
+        avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
         if (master.getAButtonPressed() || partner.getAButtonPressed()) {
             System.out.println("punched");
             weightShifter.punch();
+            //weightShifter.setVelocity(0);
         }
 
         else if (master.getBButtonPressed() || partner.getBButtonPressed()) {
             weightShifter.reset();
         }
+        
+        // if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
+            // weightSpeed = avgTriggerR;
+        // } else if ((avgTriggerR < avgTriggerL) && (avgTriggerL >= 0.1)) {
+            // weightSpeed = -avgTriggerL;
+        // } else if (master.getRightBumper()) {
+            // weightSpeed = 0.5;
+        // } else if (master.getLeftBumper()) {
+            // weightSpeed = -0.5;
+        // } else { weightSpeed = 0.0; }
 
-        else if (master.getRightBumper() || partner.getRightBumper()) {
-            weightShifter.setVelocity(0.5);
-        } else if (master.getLeftBumper() || partner.getRightBumper()) {
-            weightShifter.setVelocity(-0.5);
-        }
-
-        else if(master.getRightTriggerAxis()>0.1||master.getLeftTriggerAxis()>0.1||
-        partner.getRightTriggerAxis()>0.1||partner.getLeftTriggerAxis()>0.1)
-        {
-            avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
-            avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
-            
-            if (avgTriggerR > avgTriggerL) {
-                weightSpeed = avgTriggerR;
-            } else if (avgTriggerR < avgTriggerL) {
-                weightSpeed = -avgTriggerL;
-            } else { weightSpeed = 0; }
-
-            weightShifter.setVelocity(weightSpeed);
-        }
+        //weightShifter.setVelocity(weightSpeed);
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
