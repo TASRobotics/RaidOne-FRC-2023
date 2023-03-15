@@ -103,8 +103,8 @@ public final class Constants {
         public static final int WEIGHTSHIFTER_ID = 60;
 
         /** Weightshifter position constants */
-        public static final double WEIGHT_FRONT = 27.0;
-        public static final double WEIGHT_CENTER = 13.0;
+        public static final double WEIGHT_FRONT = 15.0;
+        public static final double WEIGHT_CENTER = 7.0;
         public static final double WEIGHT_REAR = -1.0;
 
         /** Weighshifter PID constants (Smartmotion) */
@@ -116,8 +116,8 @@ public final class Constants {
 
         /** Weightshifter PID constants (Position) */
         public static final int POSITION_ID = 1;
-        public static final double POS_kP = 0.0;
-        public static final double POS_kF = 0.0;
+        public static final double POS_kP = 0.00022499999936844688; //00002499999936844688
+        public static final double POS_kF = 1/6000;
     }
     
     /** Universal constants */
