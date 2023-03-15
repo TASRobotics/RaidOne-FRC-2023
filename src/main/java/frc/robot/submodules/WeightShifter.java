@@ -16,7 +16,7 @@ public class WeightShifter extends Submodule{
     private CANSparkMax mWeightShifter = new CANSparkMax(WeightConstants.WEIGHTSHIFTER_ID, MotorType.kBrushless);
     private SparkMaxPIDController mWeightPID;
     private RelativeEncoder mWeightEncoder;
-    private double desiredVel = 0;
+    public double desiredVel = 0;
     
     private WeightShifter() {}
     private static WeightShifter instance = null;
@@ -122,13 +122,7 @@ public class WeightShifter extends Submodule{
      * Moves the weight block at a high velocity for inertia
      */
     public void punch() {
-        if (getWeightPos() >= 26) {
-            System.out.println("in if 1");
-            desiredVel = -1;             
-        } else if (getWeightPos() <= 2) {
-            System.out.println("in if 2");
-            desiredVel = 1;
-        }
+        
     }
 
 }

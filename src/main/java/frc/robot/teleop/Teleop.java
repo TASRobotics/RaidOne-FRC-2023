@@ -66,7 +66,13 @@ public class Teleop {
 
         if (master.getAButtonPressed() || partner.getAButtonPressed()) {
             System.out.println("punched");
-            weightShifter.punch();
+            if (weightShifter.getWeightPos() >= 26) {
+                System.out.println("in if 1");
+                weightShifter.desiredVel = -1;             
+            } else if (weightShifter.getWeightPos() <= 2) {
+                System.out.println("in if 2");
+                weightShifter.desiredVel = 1;
+            }
             //weightShifter.setVelocity(0);
         }
 
