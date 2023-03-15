@@ -59,7 +59,8 @@ public class Teleop {
         }
         prevSwitchFront = switchFront;
         
-        chassis.curvatureDrive(leftY, -master.getRightX() * 0.3, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
