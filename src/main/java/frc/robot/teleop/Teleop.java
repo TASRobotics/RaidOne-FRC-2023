@@ -64,7 +64,7 @@ public class Teleop {
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
-        if (master.getAButtonPressed() || partner.getAButtonPressed()) {
+        if (master.getRightBumperPressed() || partner.getRightBumperPressed()) {
             if (weightShifter.getWeightPos() >= 13) {
                 weightShifter.setVelocity(-1);           
             } else if (weightShifter.getWeightPos() <= 2) {
