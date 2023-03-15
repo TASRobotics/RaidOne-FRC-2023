@@ -64,7 +64,7 @@ public class Teleop {
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
-        if (master.getAButtonPressed() || partner.getAButtonPressed()) {
+        if (master.getRightBumperPressed() || partner.getRightBumperPressed()) {
             System.out.println("punched");
             if (weightShifter.getWeightPos() >= 26) {
                 System.out.println("in if 1");
