@@ -35,6 +35,7 @@ public class WeightShifter extends Submodule{
     @Override
     public void onStart(double timestamp) {
         //stop();
+        mWeightShifter.setIdleMode(IdleMode.kBrake);
     }
 
     /**
@@ -50,12 +51,14 @@ public class WeightShifter extends Submodule{
         mWeightShifter.setIdleMode(IdleMode.kBrake);
         mWeightShifter.setSmartCurrentLimit(40);
         mWeightShifter.setInverted(false);
-        mWeightShifter.setSoftLimit(SoftLimitDirection.kForward, 27);
+        mWeightShifter.setSoftLimit(SoftLimitDirection.kForward, (float) 15.5);
         mWeightShifter.setSoftLimit(SoftLimitDirection.kReverse, -1);
         mWeightPID.setSmartMotionMaxVelocity(WeightConstants.MAX_VELOCITY, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setSmartMotionMaxAccel(WeightConstants.MAX_ACCEL, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setP(WeightConstants.kP, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setFF(WeightConstants.kF, WeightConstants.SMART_MOTION_ID);
+        mWeightPID.setP(WeightConstants.POS_kP, WeightConstants.POSITION_ID);
+        mWeightPID.setFF(WeightConstants.POS_kF, WeightConstants.POSITION_ID);
         mWeightPID.setFeedbackDevice(mWeightEncoder);
     }
 
@@ -64,6 +67,7 @@ public class WeightShifter extends Submodule{
      */
     public void update(double timestamp) {
         SmartDashboard.putNumber("Weight desiredvel", desiredVel);
+        SmartDashboard.putNumber("Weight position", getWeightPos());
     }
     
     /**
@@ -80,7 +84,8 @@ public class WeightShifter extends Submodule{
     @Override
     public void stop() {
         reset();
-        mWeightShifter.set(0);
+        mWeightShifter.setIdleMode(IdleMode.kCoast);
+        //mWeightShifter.set(0);
     }
 
     /**
@@ -92,7 +97,7 @@ public class WeightShifter extends Submodule{
      * Resets weight shifter to position 0
      */
     public void reset() {
-        mWeightPID.setReference(WeightConstants.WEIGHT_REAR, ControlType.kSmartMotion);
+        mWeightPID.setReference(WeightConstants.WEIGHT_REAR, ControlType.kSmartMotion, WeightConstants.SMART_MOTION_ID);
     }
     
     /**
@@ -107,7 +112,7 @@ public class WeightShifter extends Submodule{
      * @param position Value of desired position [-1, 27]
      */
     public void setPosition(double position) {
-        mWeightPID.setReference(position, ControlType.kSmartMotion);
+        mWeightPID.setReference(position, ControlType.kSmartMotion, WeightConstants.SMART_MOTION_ID);
     }
 
     /**
