@@ -10,7 +10,7 @@ import java.util.Arrays;
 import com.pathplanner.lib.PathPlanner;
 
 public class leftFront extends AutoSequence {
-    private static final Trajectory path1 = PathPlanner.loadPath("Left", AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
+    private static final Trajectory path1 = PathPlanner.loadPath("Left", 1.5, AutoConstants.MAX_ACCEL);
     public leftFront() {}
 
     @Override

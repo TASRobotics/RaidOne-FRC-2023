@@ -12,7 +12,7 @@ import com.pathplanner.lib.PathPlanner;
 public class SamplePath extends AutoSequence {
     private static final String name = "forward";
 
-    private static final Trajectory path1 = PathPlanner.loadPath(name, AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
+    private static final Trajectory path1 = PathPlanner.loadPath(name, 1.5, AutoConstants.MAX_ACCEL);
 
     public SamplePath() {
         
