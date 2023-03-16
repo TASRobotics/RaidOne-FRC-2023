@@ -285,7 +285,7 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
         // Autobalance
-        periodicIO.pitch = mImu.getPitch();
+        periodicIO.pitch = mImu.getRoll();
         
         periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
         periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
@@ -306,7 +306,7 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("actual left vel m/s", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel m/s", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
-        SmartDashboard.putNumber("pitch", mImu.getPitch());
+        SmartDashboard.putNumber("pitch", periodicIO.pitch);
 
         SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
         SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
