@@ -176,12 +176,12 @@ public class Chassis extends Submodule {
         mRightLeader.configPeakCurrentLimit(80, Constants.TIMEOUT_MS);
         mRightLeader.configPeakCurrentDuration(1000, Constants.TIMEOUT_MS);
         */
-        mLeftLeader.setSmartCurrentLimit(45);
-        mRightLeader.setSmartCurrentLimit(45);
-        mLeftFollowerA.setSmartCurrentLimit(45);
-        mRightFollowerA.setSmartCurrentLimit(45);
-        mLeftFollowerB.setSmartCurrentLimit(45);
-        mRightFollowerB.setSmartCurrentLimit(45);
+        mLeftLeader.setSmartCurrentLimit(35);
+        mRightLeader.setSmartCurrentLimit(35);
+        mLeftFollowerA.setSmartCurrentLimit(35);
+        mRightFollowerA.setSmartCurrentLimit(35);
+        mLeftFollowerB.setSmartCurrentLimit(35);
+        mRightFollowerB.setSmartCurrentLimit(35);
 
         /** Config Talon PID */
         mPIDControllerR = mRightLeader.getPIDController();
