@@ -63,6 +63,8 @@ public class Chassis extends Submodule {
 
         public double leftFF = 0.0;
         public double rightFF = 0.0;
+
+        public double leftEncoderVel;
     }
 
     public static enum GearShift {
@@ -285,7 +287,7 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
         // Autobalance
-        periodicIO.pitch = mImu.getRoll();
+        periodicIO.pitch = mImu.getRoll() * -1;
         
         periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
         periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
@@ -293,7 +295,7 @@ public class Chassis extends Submodule {
         // velocity
         periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
         periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
-
+        periodicIO.leftEncoderVel = encoderL.getVelocity(); 
         periodicIO.heading = Rotation2d.fromDegrees(rescale180(mImu.getYaw()));
 
         Pose2d updatedPose = updateOdometry();//trajectoryFollower.s().poseMeters;//updateOdometry();
@@ -349,7 +351,7 @@ public class Chassis extends Submodule {
 
         mLeftLeader.set(0.0);
         mRightLeader.set(0.0);
-        setBrakeMode(true);
+        setBrakeMode(false);
     }
 
     /**

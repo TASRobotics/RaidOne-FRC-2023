@@ -18,7 +18,7 @@ public class AutoRunner {
         new SamplePath(),
         new EmptySequence(),
         new AutoBalSequence(),
-        new leftFront(),
+        new Left(),
         new ShortTurn(),
         new ConeDrop(),
     };

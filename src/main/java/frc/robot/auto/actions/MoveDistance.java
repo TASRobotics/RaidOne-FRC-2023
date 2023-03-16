@@ -36,6 +36,7 @@ public class MoveDistance implements Action{
         }
         else{
             Chassis.getInstance().setPercentSpeed(0, 0);
+            done();
             //System.out.println("freeze");
         }
     }

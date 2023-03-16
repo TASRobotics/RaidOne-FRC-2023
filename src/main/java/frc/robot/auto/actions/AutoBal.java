@@ -12,7 +12,7 @@ public class AutoBal implements Action{
     public int autoBalMode = 0;
 
     //speed modifier multiplies motor speeds by itself, where 1 is the slow base speed used for testing
-    public double speedModifier = 1;
+    public double speedModifier = 5;
     
     /*
     autoBalMode 0 is when robot moves forward until it detects robot is tilting back
@@ -41,14 +41,14 @@ public class AutoBal implements Action{
 
     public void update(){
         System.out.println(autoBalMode);
-        speedModifier = 0.8;
+        speedModifier = 1.5;
         //NOTE: i have changed autobal multiplier to 0.01 for testing purposes so robot is much slower than usual
         double chassisSpeed = Chassis.getInstance().getPeriodicIO().pitch * AutoConstants.AUTOBAL_MULTIPLIER * speedModifier;
         prevPitch = Chassis.getInstance().getPeriodicIO().pitch;
         System.out.println("AutoBal Running...");
         System.out.println("Pitch: "+ Chassis.getInstance().getPeriodicIO().pitch);
         if(autoBalMode==0){
-            Chassis.getInstance().setPercentSpeed(0.3*speedModifier, 0.3*speedModifier);
+            Chassis.getInstance().setPercentSpeed(-0.3*speedModifier, -0.3*speedModifier);
             //SmartDashboard.putNumber("ini+5", initialPitch+5);
             //SmartDashboard.putNumber("pitch read", Chassis.getInstance().getPeriodicIO().pitch);
             if(Chassis.getInstance().getPeriodicIO().pitch >= initialPitch + 5){
@@ -57,13 +57,13 @@ public class AutoBal implements Action{
             }
         }
         if(autoBalMode == 1){
-            if (Chassis.getInstance().getPeriodicIO().pitch >= 3) {
+            if (Chassis.getInstance().getPeriodicIO().pitch >= 1) {
                 System.out.println("Head(battery side) tilting down");
-                Chassis.getInstance().setPercentSpeed(chassisSpeed, chassisSpeed); 
+                Chassis.getInstance().setPercentSpeed(-chassisSpeed, -chassisSpeed); 
 
             } else if (Chassis.getInstance().getPeriodicIO().pitch <= -3) {
                 System.out.println("Head(battery side) tilting up");
-                Chassis.getInstance().setPercentSpeed(chassisSpeed, chassisSpeed);
+                Chassis.getInstance().setPercentSpeed(-chassisSpeed, -chassisSpeed);
 
             }
         }
