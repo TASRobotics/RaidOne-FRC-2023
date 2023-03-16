@@ -7,7 +7,7 @@ import java.util.Queue;
 import frc.robot.auto.actions.Action;
 import frc.robot.auto.actions.ActionGroup;
 import frc.robot.auto.actions.DrivePath;
-import frc.robot.auto.actions.RamBack;
+import frc.robot.auto.actions.MoveDistance;
 
 public class ConeDrop extends AutoSequence {
 
@@ -19,9 +19,8 @@ public class ConeDrop extends AutoSequence {
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new RamBack()
+                new MoveDistance(0.1,0.5)
                 )
-                //new DrivePath(path1, true))
             )
         );
         
