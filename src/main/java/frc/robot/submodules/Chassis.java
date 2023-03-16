@@ -176,12 +176,12 @@ public class Chassis extends Submodule {
         mRightLeader.configPeakCurrentLimit(80, Constants.TIMEOUT_MS);
         mRightLeader.configPeakCurrentDuration(1000, Constants.TIMEOUT_MS);
         */
-        mLeftLeader.setSmartCurrentLimit(45);
-        mRightLeader.setSmartCurrentLimit(45);
-        mLeftFollowerA.setSmartCurrentLimit(45);
-        mRightFollowerA.setSmartCurrentLimit(45);
-        mLeftFollowerB.setSmartCurrentLimit(45);
-        mRightFollowerB.setSmartCurrentLimit(45);
+        mLeftLeader.setSmartCurrentLimit(35);
+        mRightLeader.setSmartCurrentLimit(35);
+        mLeftFollowerA.setSmartCurrentLimit(35);
+        mRightFollowerA.setSmartCurrentLimit(35);
+        mLeftFollowerB.setSmartCurrentLimit(35);
+        mRightFollowerB.setSmartCurrentLimit(35);
 
         /** Config Talon PID */
         mPIDControllerR = mRightLeader.getPIDController();
@@ -285,7 +285,7 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
         // Autobalance
-        periodicIO.pitch = mImu.getPitch();
+        periodicIO.pitch = mImu.getRoll();
         
         periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
         periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
@@ -306,7 +306,7 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("actual left vel m/s", periodicIO.actualLeftVelocity);
         SmartDashboard.putNumber("actual right vel m/s", periodicIO.actualRightVelocity);
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
-        SmartDashboard.putNumber("pitch", mImu.getPitch());
+        SmartDashboard.putNumber("pitch", periodicIO.pitch);
 
         SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
         SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
