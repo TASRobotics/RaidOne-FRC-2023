@@ -7,6 +7,7 @@ import frc.robot.auto.actions.Action;
 import frc.robot.auto.actions.ActionGroup;
 import frc.robot.auto.actions.AutoBal;
 import frc.robot.auto.actions.MoveDistance;
+import frc.robot.auto.actions.MoveTime;
 
 import java.util.Arrays;
 
@@ -25,7 +26,7 @@ public class Left extends AutoSequence {
             new ActionGroup(Arrays.asList(
                 //new DrivePath(path2,true),
                 //new DrivePath(path3,false),
-                new MoveDistance(1,0.01),
+                new MoveTime(1,1),
                 new DrivePath(path1, true),
                 new AutoBal()
                 //new DrivePath(path1),

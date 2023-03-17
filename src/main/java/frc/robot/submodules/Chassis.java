@@ -65,6 +65,7 @@ public class Chassis extends Submodule {
         public double rightFF = 0.0;
 
         public double leftEncoderVel;
+        public double rightEncoderVel;
     }
 
     public static enum GearShift {
