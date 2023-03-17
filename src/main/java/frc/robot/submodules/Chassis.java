@@ -74,8 +74,9 @@ public class Chassis extends Submodule {
 
     /** Enum controlling control state */
     public static enum ControlState {
-        OPEN_LOOP, PATH_FOLLOWING, AUTOBALANCE
+        OPEN_LOOP, PATH_FOLLOWING, AUTOBALANCE, HOLD
     }
+    private double lPos,rPos;
 
     /** Motors */
     private final CANSparkMax mLeftLeader = new CANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
@@ -278,6 +279,10 @@ public class Chassis extends Submodule {
                 SmartDashboard.putNumber("right ouput current", mRightLeader.getOutputCurrent());
                 SmartDashboard.putNumber("desired left vel m/s" , periodicIO.desiredLeftVelocity * 0.5);
                 SmartDashboard.putNumber("desired right vel m/s" , periodicIO.desiredRightVelocity * 0.5);
+                break;
+            case HOLD:
+                mPIDControllerL.setReference(lPos, ControlType.kSmartMotion);
+                mPIDControllerR.setReference(rPos,ControlType.kSmartMotion);
                 break;
         }
     }
@@ -553,6 +558,13 @@ public class Chassis extends Submodule {
 
             controlState = ControlState.PATH_FOLLOWING;
         }
+    }
+
+    public void smartHold(){
+        System.out.println("kdfjadasd");
+        lPos = encoderL.getPosition();
+        rPos = encoderR.getPosition();
+        controlState = ControlState.HOLD;
     }
 
     /**

@@ -17,7 +17,10 @@ public class AutoRunner {
     private AutoSequence[] sequences = {
         new Left(),
         new Right(),
-        new Middle()
+        new Middle(),
+        new ShortTurn(),
+        new ConeDrop(),
+        new PositionLockSequence()
     };
 
     public AutoRunner(){
