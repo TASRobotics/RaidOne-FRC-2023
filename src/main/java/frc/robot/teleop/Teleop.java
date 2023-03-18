@@ -61,34 +61,36 @@ public class Teleop {
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
 
+        }
+
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
 
-        if (master.getRightBumperPressed() || partner.getRightBumperPressed()) {
-            if (weightShifter.getWeightPos() >= 13) {
-                weightShifter.setVelocity(-1);           
-            } else if (weightShifter.getWeightPos() <= 2) {
-                weightShifter.setVelocity(1);
-            }
-        }
-
-        else if (master.getBButtonPressed() || partner.getBButtonPressed()) {
-            weightShifter.reset();
-        }
-
-        if (master.getXButtonPressed()) { weightShifter.desiredVel = 0; }
+        // if (master.getRightBumperPressed() || partner.getRightBumperPressed()) {
+            // if (weightShifter.getWeightPos() >= 13) {
+                // weightShifter.setVelocity(-1);           
+            // } else if (weightShifter.getWeightPos() <= 2) {
+                // weightShifter.setVelocity(1);
+            // }
+        // }
+// 
+        // else if (master.getBButtonPressed() || partner.getBButtonPressed()) {
+            // weightShifter.reset();
+        // }
+// 
+        // if (master.getXButtonPressed()) { weightShifter.desiredVel = 0; }
         
-        // if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
-            // weightSpeed = avgTriggerR;
-        // } else if ((avgTriggerR < avgTriggerL) && (avgTriggerL >= 0.1)) {
-            // weightSpeed = -avgTriggerL;
-        // } else if (master.getRightBumper()) {
-            // weightSpeed = 0.5;
-        // } else if (master.getLeftBumper()) {
-            // weightSpeed = -0.5;
-        // } else { weightSpeed = 0.0; }
+        if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
+            weightSpeed = avgTriggerR;
+        } else if ((avgTriggerR < avgTriggerL) && (avgTriggerL >= 0.1)) {
+            weightSpeed = -avgTriggerL;
+        } else if (master.getRightBumper()) {
+            weightSpeed = 0.5;
+        } else if (master.getLeftBumper()) {
+            weightSpeed = -0.5;
+        } else { weightSpeed = 0.0; }
 
-        //weightShifter.setVelocity(weightSpeed);
+        weightShifter.setVelocity(weightSpeed);
 
         // chassis.tankDrive(master.getLeftY(), master.getRightY());
 
