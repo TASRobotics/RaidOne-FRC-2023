@@ -84,7 +84,7 @@ public final class Constants {
 
         /** Autobalance multiplier */
         //* Charge station max tilt = 15 degrees
-        public static final double AUTOBAL_MULTIPLIER = 0.0045; //0.006;
+        public static final double AUTOBAL_MULTIPLIER = 0.008; //0.006;
 
         //Autobalance PID constants
         public static final double AUTOBALPID_KFF = 0.000166;

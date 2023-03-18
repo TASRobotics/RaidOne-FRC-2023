@@ -46,6 +46,7 @@ public class Teleop {
     // String message = "";
 
     boolean prevWeightState = false;
+    boolean f= false;
 
     double weightSpeed = 0.0;
     double avgTriggerR = 0.0;
@@ -67,6 +68,19 @@ public class Teleop {
             chassis.setPercentSpeed(-0.05 * forwardbutton, -0.05 * forwardbutton);
         } else if (master.getAButton()) {
             chassis.setPercentSpeed(0.05 * backbutton, 0.05 * backbutton);
+        }
+        if(f&&partner.getXButton()){
+            chassis.teleopSmartHold();
+            System.out.println("aaaa");
+        }
+        else if(partner.getXButtonPressed()){
+            chassis.setPos();
+            System.out.println("eeee");
+            f = true;
+        }
+        else{
+            chassis.normal();
+            f = false;
         }
 
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);

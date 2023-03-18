@@ -45,7 +45,7 @@ public class AutoBal implements Action{
 
     public void update(){
         //System.out.println(autoBalMode);
-        speedModifier = 1.3;
+        speedModifier = 6000;
         if(reverse==false){
         //NOTE: i have changed autobal multiplier to 0.01 for testing purposes so robot is much slower than usual
         double chassisSpeed = Chassis.getInstance().getPeriodicIO().pitch * AutoConstants.AUTOBAL_MULTIPLIER * speedModifier;
@@ -54,7 +54,7 @@ public class AutoBal implements Action{
         //System.out.println("Pitch: "+ Chassis.getInstance().getPeriodicIO().pitch);
         //System.out.println("initial pitch: " + initialPitch);
         if(autoBalMode==0){
-            Chassis.getInstance().setVelocity(-0.15*speedModifier, -0.15*speedModifier);
+            Chassis.getInstance().setVelocity(-0.3*speedModifier, -0.3*speedModifier);
             //SmartDashboard.putNumber("ini+5", initialPitch+5);
             //SmartDashboard.putNumber("pitch read", Chassis.getInstance().getPeriodicIO().pitch);
             if(Chassis.getInstance().getPeriodicIO().pitch >= initialPitch + 7){ //5

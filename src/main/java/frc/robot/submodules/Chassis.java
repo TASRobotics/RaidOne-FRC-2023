@@ -577,6 +577,20 @@ public class Chassis extends Submodule {
         controlState = ControlState.HOLD;
     }
 
+    public void teleopSmartHold(){
+        controlState = ControlState.HOLD;
+    }
+
+    public void setPos(){
+        lPos = encoderL.getPosition();
+        rPos = encoderR.getPosition();
+        controlState = ControlState.HOLD;
+    }
+
+    public void normal(){
+        controlState = ControlState.OPEN_LOOP;
+    }
+
     public void autobal() {
         controlState = ControlState.AUTOBALANCE;
     }

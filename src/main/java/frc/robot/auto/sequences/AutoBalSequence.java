@@ -21,7 +21,7 @@ public class AutoBalSequence extends AutoSequence {
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new AutoBal(true),
+                new AutoBal(),
                 new LambdaAction(() -> Chassis.getInstance().smartHold())
                 )
             )
