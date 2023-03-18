@@ -287,6 +287,11 @@ public class Chassis extends Submodule {
                 mPIDControllerL.setReference(lPos, ControlType.kSmartMotion);
                 mPIDControllerR.setReference(rPos,ControlType.kSmartMotion);
                 break;
+
+            case AUTOBALANCE:
+                mPIDControllerL.setReference(periodicIO.desiredLeftVelocity, ControlType.kVelocity,0);
+                mPIDControllerR.setReference(periodicIO.desiredRightVelocity, ControlType.kVelocity,0);
+                break;
         }
     }
 
@@ -570,6 +575,10 @@ public class Chassis extends Submodule {
         lPos = encoderL.getPosition();
         rPos = encoderR.getPosition();
         controlState = ControlState.HOLD;
+    }
+
+    public void autobal() {
+        controlState = ControlState.AUTOBALANCE;
     }
 
     /**
