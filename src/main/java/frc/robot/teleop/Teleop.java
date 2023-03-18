@@ -61,6 +61,12 @@ public class Teleop {
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
 
+        int forwardbutton = master.getYButton() ? 1 : 0;
+        int backbutton = master.getAButton() ? 1 : 0;
+        if (master.getYButton()) {
+            chassis.setPercentSpeed(-0.05 * forwardbutton, -0.05 * forwardbutton);
+        } else if (master.getAButton()) {
+            chassis.setPercentSpeed(0.05 * backbutton, 0.05 * backbutton);
         }
 
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
