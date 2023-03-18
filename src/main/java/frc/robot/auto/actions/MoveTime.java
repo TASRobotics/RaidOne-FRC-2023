@@ -21,6 +21,9 @@ public class MoveTime implements Action{
     @Override
     public boolean isDone() {
         // TODO Auto-generated method stub
+        if(Timer.getFPGATimestamp()>initialTime+time){
+            return true;
+        }
         return false;
     }
 

@@ -24,7 +24,7 @@ public class autobaltest implements Action {
      */
     @Override
     public boolean isDone() {
-        chassis.setPercentSpeed(0, 0);
+       // chassis.setPercentSpeed(0, 0);
         if (Chassis.getInstance().getPeriodicIO().pitch > -3 && Chassis.getInstance().getPeriodicIO().pitch < 3) { return true; }
         else { return false; }
         //return (Chassis.getInstance().getPeriodicIO().pitch > -3 && Chassis.getInstance().getPeriodicIO().pitch < 3);

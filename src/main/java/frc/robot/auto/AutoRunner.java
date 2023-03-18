@@ -20,7 +20,8 @@ public class AutoRunner {
         new Middle(),
         new ShortTurn(),
         new ConeDrop(),
-        new PositionLockSequence()
+        new PositionLockSequence(),
+        new AutoBalSequence(),
     };
 
     public AutoRunner(){

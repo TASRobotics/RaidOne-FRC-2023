@@ -4,6 +4,7 @@ import frc.robot.auto.actions.ActionGroup;
 import frc.robot.auto.actions.AutoBal;
 import frc.robot.auto.actions.LambdaAction;
 import frc.robot.auto.actions.PositionLock;
+import frc.robot.auto.actions.autobaltest;
 import frc.robot.submodules.Chassis;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class AutoBalSequence extends AutoSequence {
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new AutoBal(),
+                new AutoBal(true),
                 new LambdaAction(() -> Chassis.getInstance().smartHold())
                 )
             )

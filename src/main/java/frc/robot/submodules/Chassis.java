@@ -25,6 +25,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.Trajectory;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ChassisConstants;
 import frc.robot.pathing.TrajectoryFollower;
 import frc.robot.pathing.VelocityController;
@@ -260,6 +261,7 @@ public class Chassis extends Submodule {
                 //mWeightShifter.set(periodicIO.weightSpeed);
                 //System.out.println(periodicIO.leftPercent);
                 //System.out.println(periodicIO.rightPercent);
+                
                 break;  
 
             case PATH_FOLLOWING:
@@ -279,6 +281,7 @@ public class Chassis extends Submodule {
                 SmartDashboard.putNumber("right ouput current", mRightLeader.getOutputCurrent());
                 SmartDashboard.putNumber("desired left vel m/s" , periodicIO.desiredLeftVelocity * 0.5);
                 SmartDashboard.putNumber("desired right vel m/s" , periodicIO.desiredRightVelocity * 0.5);
+                
                 break;
             case HOLD:
                 mPIDControllerL.setReference(lPos, ControlType.kSmartMotion);
@@ -289,6 +292,8 @@ public class Chassis extends Submodule {
 
     @Override
     public void update(double timestamp) {
+        double chassisSpeed = (-Chassis.getInstance().getPeriodicIO().pitch) * AutoConstants.AUTOBAL_MULTIPLIER * 1.5;
+                SmartDashboard.putNumber("sssssssssss",chassisSpeed);
         SmartDashboard.putNumber("encoderL pos", encoderL.getPosition());
         SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
 
@@ -357,7 +362,7 @@ public class Chassis extends Submodule {
 
         mLeftLeader.set(0.0);
         mRightLeader.set(0.0);
-        setBrakeMode(false);
+        setBrakeMode(true);
     }
 
     /**
