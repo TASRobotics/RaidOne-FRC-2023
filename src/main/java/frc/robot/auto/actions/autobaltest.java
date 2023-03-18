@@ -1,5 +1,6 @@
 package frc.robot.auto.actions;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.submodules.Chassis;
 
@@ -10,9 +11,11 @@ import frc.robot.submodules.Chassis;
 
 public class autobaltest implements Action {
 
-    double pitch = 0.0;
-    double prevPitch = 0.0;
-    int mode = 2;
+    private double pitch = 0.0;
+    private double prevPitch = 0.0;
+    private Timer timer;
+    private double prevTime = 0.0;
+    private double balTime = 0.0;
     private Chassis chassis = Chassis.getInstance();
 
     public autobaltest() {}
@@ -24,10 +27,13 @@ public class autobaltest implements Action {
      */
     @Override
     public boolean isDone() {
-       // chassis.setPercentSpeed(0, 0);
-        if (Chassis.getInstance().getPeriodicIO().pitch > -3 && Chassis.getInstance().getPeriodicIO().pitch < 3) { return true; }
-        else { return false; }
+       // // if ((pitch > -3 && pitch < 3) && (Timer.getFPGATimestamp() > (prevTime + 2.0))) { return true; }
+        // else { return false; }
         //return (Chassis.getInstance().getPeriodicIO().pitch > -3 && Chassis.getInstance().getPeriodicIO().pitch < 3);
+        //if (timer.get() > 2.0) { return true; }
+        //else { return false; }
+        if ((prevTime > (timer.get() + 2.0)) && (prevPitch > -3 && prevPitch < 3)) { System.out.println("done"); return false; }
+        else { return false; }
     };
 
     /**
@@ -36,19 +42,35 @@ public class autobaltest implements Action {
     @Override
     public void update() {
 
+        timer = new Timer();
+        timer.start();
+        pitch = Chassis.getInstance().getPeriodicIO().pitch;
+        System.out.println("pitch: " + pitch);
+        System.out.println("time: " + timer.get());
+        
+
         if (Chassis.getInstance().getPeriodicIO().pitch > 7) {
-            chassis.setPercentSpeed(-0.2, -0.2);
+            chassis.setPercentSpeed(-0.05, -0.05);
             System.out.println("going down");
-            prevPitch = pitch;
-            mode = 0;
         }
 
         if (Chassis.getInstance().getPeriodicIO().pitch < -7) {
-            chassis.setPercentSpeed(0.2, 0.2);
+            chassis.setPercentSpeed(0.05, 0.05);
             System.out.println("going up");
-            prevPitch = pitch;
-            mode = 1;
         }
+        
+        prevPitch = pitch;
+
+        if (pitch > -3 && pitch < 3) {
+            prevTime = timer.get();
+            System.out.println(timer.get());
+        }
+
+        if (prevPitch < -3 || prevPitch > 3) {
+            System.out.println(timer.get());
+            timer.reset();
+        }
+        
 
     };
 
@@ -64,6 +86,8 @@ public class autobaltest implements Action {
      * runs once when the action first starts
      */
     @Override
-    public void initialize() {};
+    public void initialize() {
+        timer.reset();
+    };
 
 }

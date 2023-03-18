@@ -16,7 +16,7 @@ import java.util.Arrays;
 import com.pathplanner.lib.PathPlanner;
 
 public class Left extends AutoSequence {
-    private static final Trajectory path1 = PathPlanner.loadPath("Left", 1.2, AutoConstants.MAX_ACCEL);
+    private static final Trajectory path1 = PathPlanner.loadPath("Left", 1.8, AutoConstants.MAX_ACCEL);
     private static final Trajectory path2 = PathPlanner.loadPath("Left cone", 1.5, AutoConstants.MAX_ACCEL,true);
     //private static final autobaltest autobal = new autobaltest();
     public Left() {}

@@ -22,6 +22,7 @@ public class AutoRunner {
         new ConeDrop(),
         new PositionLockSequence(),
         new AutoBalSequence(),
+        new SamplePath()
     };
 
     public AutoRunner(){
