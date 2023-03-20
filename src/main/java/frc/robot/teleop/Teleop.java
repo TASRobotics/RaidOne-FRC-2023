@@ -70,11 +70,11 @@ public class Teleop {
             chassis.setPercentSpeed(0.05 * backbutton, 0.05 * backbutton);
         }
         if(f&&partner.getXButton()){
-            chassis.teleopSmartHold();
+            //chassis.teleopSmartHold();
             System.out.println("aaaa");
         }
         else if(partner.getXButtonPressed()){
-            chassis.setPos();
+            chassis.smartHold();
             System.out.println("eeee");
             f = true;
         }
