@@ -46,7 +46,7 @@ public class Teleop {
     // String message = "";
 
     boolean prevWeightState = false;
-    boolean f= false;
+    boolean hold = false;
 
     double weightSpeed = 0.0;
     double avgTriggerR = 0.0;
@@ -62,12 +62,18 @@ public class Teleop {
         
         chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
 
-        int forwardbutton = master.getYButton() ? 1 : 0;
-        int backbutton = master.getAButton() ? 1 : 0;
+        int adjustForward = master.getYButton() ? 1 : 0;
+        int adjustReverse = master.getAButton() ? 1 : 0;
+        int adjustLeft = master.getXButton() ? 1 : 0;
+        int adjustRight = master.getBButton() ? 1 : 0;
         if (master.getYButton()) {
-            chassis.setPercentSpeed(-0.05 * forwardbutton, -0.05 * forwardbutton);
+            chassis.setPercentSpeed(-0.05 * adjustForward * driveMultiplier, -0.05 * adjustForward * driveMultiplier);
         } else if (master.getAButton()) {
-            chassis.setPercentSpeed(0.05 * backbutton, 0.05 * backbutton);
+            chassis.setPercentSpeed(0.05 * adjustReverse * driveMultiplier, 0.05 * adjustReverse * driveMultiplier);
+        } else if (master.getXButton()) {
+            chassis.setPercentSpeed(0.05 * adjustLeft * driveMultiplier, -0.05 * adjustLeft * driveMultiplier);
+        } else if (master.getBButton()) {
+            chassis.setPercentSpeed(-0.05 * adjustRight * driveMultiplier, 0.05 * adjustRight * driveMultiplier);
         }
         if(f&&partner.getXButton()){
             //chassis.teleopSmartHold();
@@ -81,6 +87,10 @@ public class Teleop {
         else{
             chassis.normal();
             f = false;
+        if (master.getRightBumper() || partner.getRightBumper()) {
+            driveMultiplier = 4.0;
+        } else {
+            driveMultiplier = 1.0;
         }
 
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
