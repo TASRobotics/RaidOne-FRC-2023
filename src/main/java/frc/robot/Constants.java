@@ -27,6 +27,9 @@ public final class Constants {
         public static final double kA = 10.0; //0.0003; //10.0
         public static final double kP = 0.00001; //0.3 //0.000025
 
+        public static final int HOLD_PID_IDX = 1;
+        public static final double HOLD_KP = 1.0;
+
         /** Slew rate limiter for drive accel */
         public static final double SLEW_FILTER = 0.5;
         
@@ -49,7 +52,7 @@ public final class Constants {
             
         /** Teleop Constants */
         public static final int MONOMIAL_SCALE = 0;
-        public static final double RAMP_RATE = 0.3;
+        public static double RAMP_RATE = 0.05;
     }
 
     public static final class IntakeConstants {
@@ -118,6 +121,10 @@ public final class Constants {
         public static final int POSITION_ID = 1;
         public static final double POS_kP = 0.00022499999936844688; //00002499999936844688
         public static final double POS_kF = 1/6000;
+
+        /** Weightshifter PID constants HOLD (Position2) */
+        public static final int POSITION_ID_HOLD = 2;
+        public static final double POS_kP_HOLD = 100.0;
     }
     
     /** Universal constants */
