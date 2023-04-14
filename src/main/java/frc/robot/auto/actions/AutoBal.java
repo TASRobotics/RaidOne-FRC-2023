@@ -11,6 +11,7 @@ public class AutoBal implements Action{
     public double initialPitch = 0;
     public int autoBalMode = 0;
     private boolean reverse = false;
+    private boolean stop = false;
 
     //speed modifier multiplies motor speeds by itself, where 1 is the slow base speed used for testing
     public double speedModifier = 5;
@@ -40,6 +41,7 @@ public class AutoBal implements Action{
             return true;
         } else { return false; }
 */
+        if(stop) return true;
         return false;
     }
 
@@ -74,6 +76,7 @@ public class AutoBal implements Action{
             }
             else{
                 Chassis.getInstance().setVelocity(0,0);
+                stop = true;
                 done();
             }
         }}
