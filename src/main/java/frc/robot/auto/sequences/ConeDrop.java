@@ -15,17 +15,19 @@ import frc.robot.auto.actions.MoveDistance;
 
 public class ConeDrop extends AutoSequence {
 
-    private static final String name = "CrossPlatform";
+    private static final String name = "Cone forward";
 
-    private static final Trajectory path1 = PathPlanner.loadPath(name, AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL);
+    private static final Trajectory path1 = PathPlanner.loadPath(name, AutoConstants.MAX_VEL, AutoConstants.MAX_ACCEL, true);
 
     public ConeDrop() {}
 
+
+    
     @Override
     public void sequence() {
         addAction(
             new ActionGroup(Arrays.asList(
-                new MoveDistance(0.1,0.5)
+                new DrivePath(path1, true)
                 )
             )
         );

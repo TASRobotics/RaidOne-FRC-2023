@@ -44,5 +44,5 @@ public class Left extends AutoSequence {
     @Override
     public String getName() {
         return "leftFront";
-    }
+    }   
 }
