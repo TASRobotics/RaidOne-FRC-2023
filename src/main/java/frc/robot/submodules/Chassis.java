@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU.CalibrationMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -27,6 +28,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ChassisConstants;
+import frc.robot.auto.actions.autobaltest;
 import frc.robot.pathing.TrajectoryFollower;
 import frc.robot.pathing.VelocityController;
 import frc.robot.utils.JoystickUtils;
@@ -77,7 +79,7 @@ public class Chassis extends Submodule {
     public static enum ControlState {
         OPEN_LOOP, PATH_FOLLOWING, AUTOBALANCE, HOLD
     }
-    private double lPos,rPos;
+    private double lPos, rPos, weightPos;
 
     /** Motors */
     private final CANSparkMax mLeftLeader = new CANSparkMax(ChassisConstants.LEFT_LEADER_ID, MotorType.kBrushless);
@@ -94,8 +96,8 @@ public class Chassis extends Submodule {
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
-    //private RelativeEncoder encoderL;
-    //private RelativeEncoder encoderR;
+    private RelativeEncoder encoderL2 = mLeftLeader.getEncoder();
+    private RelativeEncoder encoderR2 = mRightLeader.getEncoder();
     private final CANCoder encoderL = new CANCoder(1);
     private final CANCoder encoderR = new CANCoder(2);
 
@@ -138,6 +140,7 @@ public class Chassis extends Submodule {
 
         /** Config factory default for sensors */
         mImu.configFactoryDefault();
+        mImu.enterCalibrationMode(CalibrationMode.BootTareGyroAccel);
 
         /** Config followers */
         mLeftFollowerA.follow(mLeftLeader);
@@ -193,6 +196,8 @@ public class Chassis extends Submodule {
         mPIDControllerL = mLeftLeader.getPIDController();
         mPIDControllerR.setP(ChassisConstants.kP);
         mPIDControllerL.setP(ChassisConstants.kP);
+        mPIDControllerL.setP(ChassisConstants.HOLD_KP, ChassisConstants.HOLD_PID_IDX);
+        mPIDControllerR.setP(ChassisConstants.HOLD_KP, ChassisConstants.HOLD_PID_IDX);
         mPIDControllerL.setIZone(ChassisConstants.PID_LOOP_IDX);
         mPIDControllerR.setIZone(ChassisConstants.PID_LOOP_IDX);
         mPIDControllerL.setFF(1.0/6000.0); 
@@ -281,11 +286,12 @@ public class Chassis extends Submodule {
                 SmartDashboard.putNumber("right ouput current", mRightLeader.getOutputCurrent());
                 SmartDashboard.putNumber("desired left vel m/s" , periodicIO.desiredLeftVelocity * 0.5);
                 SmartDashboard.putNumber("desired right vel m/s" , periodicIO.desiredRightVelocity * 0.5);
-                
+
                 break;
             case HOLD:
-                mPIDControllerL.setReference(lPos, ControlType.kSmartMotion);
-                mPIDControllerR.setReference(rPos,ControlType.kSmartMotion);
+                mPIDControllerL.setReference(lPos, ControlType.kPosition, ChassisConstants.HOLD_PID_IDX);
+                mPIDControllerR.setReference(rPos,ControlType.kPosition, ChassisConstants.HOLD_PID_IDX);
+                WeightShifter.getInstance().setPosition(weightPos);
                 break;
 
             case AUTOBALANCE:
@@ -329,7 +335,9 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
         SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
 
-        SmartDashboard.putNumber("desired vel", -periodicIO.desiredLeftVelocity);
+        SmartDashboard.putNumber("left desired vel", -periodicIO.desiredLeftVelocity);
+        
+        SmartDashboard.putNumber("ramprate", ChassisConstants.RAMP_RATE);
 
         if(controlState == ControlState.PATH_FOLLOWING) {
             /** WHY DO I NEED TO MAKE THIS NEGATIVE!?! */
@@ -572,8 +580,9 @@ public class Chassis extends Submodule {
 
     public void smartHold(){
         System.out.println("kdfjadasd");
-        lPos = encoderL.getPosition();
-        rPos = encoderR.getPosition();
+        lPos = encoderL2.getPosition();
+        rPos = encoderR2.getPosition();
+        weightPos = WeightShifter.getInstance().getWeightPos();
         controlState = ControlState.HOLD;
     }
 
@@ -584,7 +593,8 @@ public class Chassis extends Submodule {
     public void setPos(){
         lPos = encoderL.getPosition();
         rPos = encoderR.getPosition();
-        controlState = ControlState.HOLD;
+        weightPos = WeightShifter.getInstance().getWeightPos();
+        //controlState = ControlState.HOLD;
     }
 
     public void normal(){
