@@ -3,6 +3,7 @@ package frc.robot.teleop;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.ChassisConstants;
 import frc.robot.submodules.Chassis;
 import frc.robot.submodules.WeightShifter;
 
@@ -51,6 +52,7 @@ public class Teleop {
     double weightSpeed = 0.0;
     double avgTriggerR = 0.0;
     double avgTriggerL = 0.0;
+    double driveMultiplier = 0.0;
 
     public void onLoop() {
         double leftY = master.getLeftY() * val;
@@ -75,18 +77,21 @@ public class Teleop {
         } else if (master.getBButton()) {
             chassis.setPercentSpeed(-0.05 * adjustRight * driveMultiplier, 0.05 * adjustRight * driveMultiplier);
         }
-        if(f&&partner.getXButton()){
+        if(hold&&partner.getXButton()){
             //chassis.teleopSmartHold();
             System.out.println("aaaa");
         }
         else if(partner.getXButtonPressed()){
             chassis.smartHold();
             System.out.println("eeee");
-            f = true;
+            hold = true;
         }
         else{
             chassis.normal();
-            f = false;
+            System.out.println("Hold off");
+            hold = false;
+        }
+
         if (master.getRightBumper() || partner.getRightBumper()) {
             driveMultiplier = 4.0;
         } else {
@@ -148,6 +153,7 @@ public class Teleop {
         SmartDashboard.putNumber("x pose", chassis.getPeriodicIO().x);
         SmartDashboard.putNumber("y pose", chassis.getPeriodicIO().y);
         SmartDashboard.putNumber("rotation", chassis.getPeriodicIO().rotation.getDegrees());
+        SmartDashboard.putBoolean("Hold state", hold);
 
         if(master.getStartButton()) {
             //climb.setState(EZClimbState.UP);
