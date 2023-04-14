@@ -53,7 +53,7 @@ public class Teleop {
     double avgTriggerL = 0.0;
 
     public void onLoop() {
-        double leftY = master.getLeftY() * val * 0.9;
+        double leftY = master.getLeftY() * val;
         switchFront = master.getRightStickButton();
         if(switchFront && !prevSwitchFront) {
             val *= -1;
