@@ -59,6 +59,7 @@ public class WeightShifter extends Submodule{
         mWeightPID.setFF(WeightConstants.kF, WeightConstants.SMART_MOTION_ID);
         mWeightPID.setP(WeightConstants.POS_kP, WeightConstants.POSITION_ID);
         mWeightPID.setFF(WeightConstants.POS_kF, WeightConstants.POSITION_ID);
+        mWeightPID.setP(WeightConstants.POS_kP_HOLD, WeightConstants.POSITION_ID_HOLD);
         mWeightPID.setFeedbackDevice(mWeightEncoder);
     }
 
@@ -112,7 +113,8 @@ public class WeightShifter extends Submodule{
      * @param position Value of desired position [-1, 27]
      */
     public void setPosition(double position) {
-        mWeightPID.setReference(position, ControlType.kSmartMotion, WeightConstants.SMART_MOTION_ID);
+        mWeightPID.setReference(position, ControlType.kSmartMotion, WeightConstants.POSITION_ID_HOLD);
+        System.out.println("Holding weight");
     }
 
     /**
