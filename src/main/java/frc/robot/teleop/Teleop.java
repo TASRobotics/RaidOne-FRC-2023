@@ -3,7 +3,6 @@ package frc.robot.teleop;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Constants.ChassisConstants;
 import frc.robot.submodules.Chassis;
 import frc.robot.submodules.WeightShifter;
 
@@ -54,15 +53,28 @@ public class Teleop {
     double avgTriggerL = 0.0;
     double driveMultiplier = 0.0;
 
+    boolean driveType = true;
+
     public void onLoop() {
         double leftY = master.getLeftY() * val;
+        double rightY = master.getRightY() * val;
         switchFront = master.getRightStickButton();
         if(switchFront && !prevSwitchFront) {
             val *= -1;
         }
         prevSwitchFront = switchFront;
         
-        chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        if (driveType) {
+            chassis.curvatureDrive(leftY, -master.getRightX() * 0.5, Math.abs(master.getLeftY()) < Constants.DEADBAND);
+        } else {
+            chassis.tankDrive(leftY, rightY);
+        }
+
+        if (master.getRightBumper() || partner.getRightBumper()) {
+            driveType = true;
+        } else if (master.getLeftBumper() || partner.getLeftBumper()) {
+            driveType = false;
+        }
 
         int adjustForward = master.getYButton() ? 1 : 0;
         int adjustReverse = master.getAButton() ? 1 : 0;
@@ -92,11 +104,11 @@ public class Teleop {
             hold = false;
         }
 
-        if (master.getRightBumper() || partner.getRightBumper()) {
-            driveMultiplier = 4.0;
-        } else {
-            driveMultiplier = 1.0;
-        }
+        // if (master.getRightBumper() || partner.getRightBumper()) {
+        //     driveMultiplier = 4.0;
+        // } else {
+        //     driveMultiplier = 1.0;
+        // }
 
         avgTriggerR = ((master.getRightTriggerAxis() + partner.getRightTriggerAxis()) / 2);
         avgTriggerL = ((master.getLeftTriggerAxis() + partner.getLeftTriggerAxis()) / 2);
@@ -115,15 +127,15 @@ public class Teleop {
 // 
         // if (master.getXButtonPressed()) { weightShifter.desiredVel = 0; }
         
-        if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
-            weightSpeed = avgTriggerR;
-        } else if ((avgTriggerR < avgTriggerL) && (avgTriggerL >= 0.1)) {
-            weightSpeed = -avgTriggerL;
-        } else if (master.getRightBumper()) {
-            weightSpeed = 0.5;
-        } else if (master.getLeftBumper()) {
-            weightSpeed = -0.5;
-        } else { weightSpeed = 0.0; }
+        // if ((avgTriggerR > avgTriggerL) && (avgTriggerR >= 0.1)) {
+        //     weightSpeed = avgTriggerR;
+        // } else if ((avgTriggerR < avgTriggerL) && (avgTriggerL >= 0.1)) {
+        //     weightSpeed = -avgTriggerL;
+        // } else if (master.getRightBumper()) {
+        //     weightSpeed = 0.5;
+        // } else if (master.getLeftBumper()) {
+        //     weightSpeed = -0.5;
+        // } else { weightSpeed = 0.0; }
 
         weightShifter.setVelocity(weightSpeed);
 
@@ -154,6 +166,7 @@ public class Teleop {
         SmartDashboard.putNumber("y pose", chassis.getPeriodicIO().y);
         SmartDashboard.putNumber("rotation", chassis.getPeriodicIO().rotation.getDegrees());
         SmartDashboard.putBoolean("Hold state", hold);
+        SmartDashboard.putBoolean("Drive type", driveType);
 
         if(master.getStartButton()) {
             //climb.setState(EZClimbState.UP);
