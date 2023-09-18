@@ -57,11 +57,11 @@ public class TrajectoryFollower {
     public DifferentialDriveWheelSpeeds update(Pose2d currentPose) {
         double time = timer.get();
         PathPlannerState sampled = (PathPlannerState) currentTrajectory.sample(time);
-        System.out.println("Sampled: " + sampled.toString() + " | Actual: " + currentPose.toString());
-        var targetWheelSpeeds = kinematics.toWheelSpeeds(
-           controller.calculate(currentPose, sampled)
-        );
-        //var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocityRadPerSec));
+        // System.out.println("Sampled: " + sampled.toString() + " | Actual: " + currentPose.toString());
+        // var targetWheelSpeeds = kinematics.toWheelSpeeds(
+        //    controller.calculate(currentPose, sampled)
+        // );
+        var targetWheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(sampled.velocityMetersPerSecond, 0, sampled.angularVelocityRadPerSec));
         return targetWheelSpeeds;
     }
 
