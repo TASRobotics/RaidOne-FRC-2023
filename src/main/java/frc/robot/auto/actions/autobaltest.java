@@ -1,7 +1,6 @@
 package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.submodules.Chassis;
 
 /**

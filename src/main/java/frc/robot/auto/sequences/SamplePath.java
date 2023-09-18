@@ -2,7 +2,6 @@ package frc.robot.auto.sequences;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.auto.actions.DrivePath;
 import frc.robot.auto.actions.MoveTime;
 import frc.robot.auto.actions.autobaltest;
 import frc.robot.auto.actions.ActionGroup;

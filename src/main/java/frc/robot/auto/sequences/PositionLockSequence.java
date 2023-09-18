@@ -1,7 +1,6 @@
 package frc.robot.auto.sequences;
 
 import frc.robot.auto.actions.ActionGroup;
-import frc.robot.auto.actions.AutoBal;
 import frc.robot.auto.actions.PositionLock;
 
 import java.util.Arrays;
