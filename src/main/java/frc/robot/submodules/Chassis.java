@@ -89,8 +89,8 @@ public class Chassis extends Submodule {
 
     /** Sensors */
     private final PigeonIMU mImu = new PigeonIMU(ChassisConstants.IMU_ID);
-    private RelativeEncoder encoderL2 = mLeftLeader.getEncoder();
-    private RelativeEncoder encoderR2 = mRightLeader.getEncoder();
+    private RelativeEncoder sparkEncoderL = mLeftLeader.getEncoder();
+    private RelativeEncoder sparkEncoderR = mRightLeader.getEncoder();
     private final CANCoder encoderL = new CANCoder(1);
     private final CANCoder encoderR = new CANCoder(2);
 
@@ -155,6 +155,9 @@ public class Chassis extends Submodule {
         encoderR.configSensorDirection(true);
         encoderL.configSensorInitializationStrategy(SensorInitializationStrategy.BootToZero);
         encoderR.configSensorInitializationStrategy(SensorInitializationStrategy.BootToZero);
+
+        sparkEncoderL.setInverted(false);
+        sparkEncoderR.setInverted(true);
 
         mLeftLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
         mRightLeader.enableVoltageCompensation(Constants.VOLTAGE_COMPENSATION);
@@ -298,19 +301,19 @@ public class Chassis extends Submodule {
     public void update(double timestamp) {
         double chassisSpeed = (-Chassis.getInstance().getPeriodicIO().pitch) * AutoConstants.AUTOBAL_MULTIPLIER * 1.5;
                 SmartDashboard.putNumber("sssssssssss",chassisSpeed);
-        SmartDashboard.putNumber("encoderL pos", encoderL.getPosition());
-        SmartDashboard.putNumber("encoderR pos", encoderR.getPosition());
+        SmartDashboard.putNumber("encoderL pos", sparkEncoderL.getPosition());
+        SmartDashboard.putNumber("encoderR pos", sparkEncoderR.getPosition());
 
         // Autobalance
         periodicIO.pitch = mImu.getRoll() * -1;
         
-        periodicIO.leftPosition = encoderL.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
-        periodicIO.rightPosition = encoderR.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
+        periodicIO.leftPosition = sparkEncoderL.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
+        periodicIO.rightPosition = sparkEncoderR.getPosition() * ChassisConstants.kEncoderDistancePerPulse;
 
         // velocity
-        periodicIO.actualLeftVelocity = encoderL.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
-        periodicIO.actualRightVelocity = encoderR.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
-        periodicIO.leftEncoderVel = encoderL.getVelocity(); 
+        periodicIO.actualLeftVelocity = sparkEncoderL.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
+        periodicIO.actualRightVelocity = sparkEncoderR.getVelocity() * ChassisConstants.kEncoderDistancePerPulse;
+        periodicIO.leftEncoderVel = sparkEncoderL.getVelocity(); 
         periodicIO.heading = Rotation2d.fromDegrees(rescale180(mImu.getYaw()));
 
         Pose2d updatedPose = updateOdometry();//trajectoryFollower.s().poseMeters;//updateOdometry();
@@ -325,8 +328,8 @@ public class Chassis extends Submodule {
         SmartDashboard.putNumber("heading", periodicIO.heading.getDegrees());
         SmartDashboard.putNumber("pitch", periodicIO.pitch);
 
-        SmartDashboard.putNumber("left enc vel", encoderL.getVelocity());
-        SmartDashboard.putNumber("Right enc vel", encoderR.getVelocity());
+        SmartDashboard.putNumber("left enc vel", sparkEncoderL.getVelocity());
+        SmartDashboard.putNumber("Right enc vel", sparkEncoderR.getVelocity());
 
         SmartDashboard.putNumber("left desired vel", -periodicIO.desiredLeftVelocity);
         
@@ -481,8 +484,8 @@ public class Chassis extends Submodule {
 
     /** Resets drive encoders to 0 */
     public void resetEncoders() {
-        encoderL.setPosition(0);
-        encoderR.setPosition(0);
+        sparkEncoderL.setPosition(0);
+        sparkEncoderR.setPosition(0);
     }
 
     /** Zeros IMU heading */
@@ -573,8 +576,8 @@ public class Chassis extends Submodule {
 
     public void smartHold(){
         System.out.println("kdfjadasd");
-        lPos = encoderL2.getPosition();
-        rPos = encoderR2.getPosition();
+        lPos = sparkEncoderL.getPosition();
+        rPos = sparkEncoderR.getPosition();
         weightPos = WeightShifter.getInstance().getWeightPos();
         controlState = ControlState.HOLD;
     }
@@ -584,8 +587,8 @@ public class Chassis extends Submodule {
     }
 
     public void setPos(){
-        lPos = encoderL.getPosition();
-        rPos = encoderR.getPosition();
+        lPos = sparkEncoderL.getPosition();
+        rPos = sparkEncoderR.getPosition();
         weightPos = WeightShifter.getInstance().getWeightPos();
         //controlState = ControlState.HOLD;
     }
